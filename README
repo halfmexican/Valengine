@@ -1,0 +1,31 @@
+# Valengine
+Valengine is an open-source game engine project that utilizes raylib and raylib-vapi.
+
+## Overview
+Valengine is designed to provide a simple and efficient game development environment. It builds upon the powerful raylib library and incorporates raylib-vapi, which includes an incomplete OOP wrapper for raylib, to offer an object-oriented approach to game development in Vala.
+
+## Features
+Built on raylib, a simple and easy-to-use library for game programming
+Utilizes raylib-vapi for Vala bindings and object-oriented programming capabilities
+Open-source and free to use under the GPL-3.0 license
+
+## Getting Started
+(Add instructions for setting up and using Valengine)
+
+## Dependencies
+raylib
+raylib-vapi
+License
+
+## This project is licensed under the GNU General Public License v3.0 (GPL-3.0). See the LICENSE file for details.
+
+Contributing
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+Acknowledgements
+raylib
+raylib-vapi by Alex Macafee (@lxmcf)
+raylib-oop by Charadon
+
+Disclaimer
+Please note that the OOP wrapper in raylib-vapi is incomplete. Some features may be limited or unavailable.

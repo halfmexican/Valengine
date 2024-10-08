@@ -1,0 +1,13 @@
+option(
+	'examples',
+	type: 'boolean',
+	value: true,
+	description: 'Build the Test Applications.'
+)
+
+option(
+	'valengine',
+	type: 'boolean',
+	value: true,
+	description: 'Build the Test Applications.'
+)
