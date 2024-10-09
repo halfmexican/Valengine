@@ -13,14 +13,21 @@ namespace Valengine {
         }
 
         public override void update (float delta) {
-            if (Keyboard.is_down (Keyboard.Key.LEFT))position.x -= PLAYER_HOR_SPD * delta;
-            if (Keyboard.is_down (Keyboard.Key.RIGHT))position.x += PLAYER_HOR_SPD * delta;
-            if (Keyboard.is_down (Keyboard.Key.SPACE) && can_jump) {
-                speed = -PLAYER_JUMP_SPD;
-                can_jump = false;
+            switch (movement_type) {
+                case MovementType.PLATFORMER:
+                    update_platformer_movement(delta);
+                    break;
+                case MovementType.TOP_DOWN:
+                    update_top_down_movement(delta);
+                    break;
+                case MovementType.FREE_MOVE:
+                    update_free_move_movement(delta);
+                    break;
+                case MovementType.GRID_BASED:
+                    update_grid_based_movement(delta);
+                    break;
             }
 
-            // Call base update logic
             base.update (delta);
         }
 

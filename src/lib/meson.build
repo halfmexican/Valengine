@@ -21,5 +21,7 @@ valengine_src = [
 	'src/valengine/CameraModeEnum.vala',
 	'src/valengine/MovementTypeEnum.vala',
 	'src/valengine/CharacterBody.vala',
-	'src/valengine/PlayerBody.vala'
+	'src/valengine/PlayerBody.vala',
+	'src/valengine/World.vala',
+	'src/valengine/EnviromentItem.vala',
 ]

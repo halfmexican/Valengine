@@ -20,8 +20,8 @@ namespace Valengine {
 
         public virtual void update (float delta) {
             // Update collision shape position
-            collision_shape.x = position.x;
-            collision_shape.y = position.y;
+            collision_shape.x = position.x - collision_shape.width / 2;
+            collision_shape.y = position.y - collision_shape.height;
 
             // Common update logic for all character bodies
         }

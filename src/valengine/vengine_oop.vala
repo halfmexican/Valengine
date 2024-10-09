@@ -50,7 +50,7 @@ public class Game : GLib.Application {
     // First method called when the application is started
     public override void activate () {
         try {
-            window = new Window (SCREEN_WIDTH, SCREEN_HEIGHT, "raylib [core] example - 2d camera");
+            window = new Window (SCREEN_WIDTH, SCREEN_HEIGHT, "Valengine [core] example - 2d camera");
         } catch (WindowError e) {
             error (e.message);
         }
@@ -85,7 +85,7 @@ public class Game : GLib.Application {
 
         float delta_time = window.frame_time;
 
-        update_player (delta_time);
+        player.update (delta_time);
         camera.update_camera_combined (player, delta_time, SCREEN_WIDTH, SCREEN_HEIGHT, 40.0f, current_camera_mode);
 
         if (Keyboard.is_pressed (Keyboard.Key.C)) {
@@ -98,10 +98,11 @@ public class Game : GLib.Application {
                 foreach (var ei in env_items) {
                     ei.rect.draw (ei.color, null, 0);
                 }
-                Rectangle player_rect = new Rectangle (player.position.x - 20, player.position.y - 40, 40, 40);
-                player_rect.draw (Color.RED, null, 0);
-                var center_rect = new Circle (player.position.x, player.position.y, 5.0f);
-                center_rect.draw (Color.GOLD);
+                //Rectangle player_rect = new Rectangle (player.position.x - 20, player.position.y - 40, 40, 40);
+                //player_rect.draw (Color.RED, null, 0);
+                player.draw ();
+                var center_circle = new Circle (player.position.x, player.position.y, 5.0f);
+                center_circle.draw (Color.GOLD);
             });
 
             draw_instructions ();
