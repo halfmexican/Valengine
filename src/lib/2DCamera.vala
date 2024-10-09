@@ -3,7 +3,7 @@ using Valengine.Shapes;
 
 namespace Valengine {
     public class 2DCamera : Object {
-        internal Raylib.Camera2D iCamera;
+        public Raylib.Camera2D iCamera;
         /* Constructors */
         public 2DCamera (Vector2 offset, Vector2 target, float rotation, float zoom) {
             iCamera.offset = offset.iVector;
