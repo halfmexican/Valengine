@@ -18,4 +18,8 @@ valengine_src = [
 	'src/lib/Log.vala',
 	'src/lib/Automation/EventList.vala',
 	'src/lib/Text.vala',
+	'src/valengine/CameraModeEnum.vala',
+	'src/valengine/MovementTypeEnum.vala',
+	'src/valengine/CharacterBody.vala',
+	'src/valengine/PlayerBody.vala'
 ]

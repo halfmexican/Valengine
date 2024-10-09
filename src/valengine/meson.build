@@ -5,8 +5,6 @@ if get_option('valengine') == true
         dependencies: [valengine_dep],
         sources: [
             'vengine_oop.vala',
-            'CharacterBody.vala',
-            'PlayerBody.vala',
             'meta/license.vala',
             'meta/version.vala',
         ],
