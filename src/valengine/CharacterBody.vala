@@ -1,5 +1,4 @@
 using GLib;
-using Valengine;
 using Valengine.Shapes;
 using Valengine.Input;
 
