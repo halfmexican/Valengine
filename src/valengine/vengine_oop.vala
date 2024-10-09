@@ -16,7 +16,6 @@ public class Game : GLib.Application {
 
     public enum CameraMode {
         FOLLOW_PLAYER,
-        FOLLOW_PLAYER_INSIDE_MAP,
         FOLLOW_PLAYER_SMOOTH,
         EVEN_OUT_ON_LANDING,
         PLAYER_BOUNDS_PUSH
@@ -24,7 +23,6 @@ public class Game : GLib.Application {
 
     public static CameraMode[] camera_modes = {
         CameraMode.FOLLOW_PLAYER,
-        CameraMode.FOLLOW_PLAYER_INSIDE_MAP,
         CameraMode.FOLLOW_PLAYER_SMOOTH,
         CameraMode.EVEN_OUT_ON_LANDING,
         CameraMode.PLAYER_BOUNDS_PUSH
@@ -33,7 +31,7 @@ public class Game : GLib.Application {
     private 2DCamera camera;
     private CameraMode current_camera_mode = CameraMode.FOLLOW_PLAYER_SMOOTH;
 
-    private Player player;
+    private PlayerBody player;
     private EnvItem[] env_items;
 
     public class Player {
@@ -71,7 +69,7 @@ public class Game : GLib.Application {
             error (e.message);
         }
 
-        player = new Player (400, 280);
+        player = new PlayerBody (400, 280);
         env_items = {
             new EnvItem (0, 0, 1000, 400, false, Color.SKY_BLUE),
             new EnvItem (0, 400, 1000, 200, true, Color.GRAY),
@@ -109,7 +107,7 @@ public class Game : GLib.Application {
         update_camera_combined (player, delta_time, SCREEN_WIDTH, SCREEN_HEIGHT, 40.0f, current_camera_mode);
 
         if (Keyboard.is_pressed (Keyboard.Key.C)) {
-            current_camera_mode = (CameraMode)(((int)current_camera_mode + 1) % camera_modes.length);
+            current_camera_mode = (CameraMode) (((int) current_camera_mode + 1) % camera_modes.length);
         }
 
         window.draw (() => {
@@ -161,7 +159,7 @@ public class Game : GLib.Application {
         }
     }
 
-    private void update_camera_combined (Player player, float delta, int width, int height, float vertical_offset, CameraMode mode) {
+    private void update_camera_combined (PlayerBody player, float delta, int width, int height, float vertical_offset, CameraMode mode) {
         switch (mode) {
             case CameraMode.FOLLOW_PLAYER:
                 update_camera_center (player, delta, width, height, vertical_offset);
@@ -178,12 +176,12 @@ public class Game : GLib.Application {
         }
     }
 
-    private void update_camera_center (Player player, float delta, int width, int height, float vertical_offset) {
+    private void update_camera_center (PlayerBody player, float delta, int width, int height, float vertical_offset) {
         camera.offset = new Vector2 (width / 2.0f, height / 2.0f + vertical_offset);
         camera.target = player.position;
     }
 
-    private void update_camera_center_smooth_follow (Player player, float delta, int width, int height, float vertical_offset) {
+    private void update_camera_center_smooth_follow (PlayerBody player, float delta, int width, int height, float vertical_offset) {
         camera.offset = new Vector2 (width / 2.0f, height / 2.0f + vertical_offset);
         Vector2 diff = new Vector2 (player.position.x - camera.target.x, player.position.y - camera.target.y);
         camera.target = new Vector2 (
@@ -192,7 +190,7 @@ public class Game : GLib.Application {
         );
     }
 
-    private void update_camera_player_bounds_push (Player player, float delta, int width, int height, float vertical_offset) {
+    private void update_camera_player_bounds_push (PlayerBody player, float delta, int width, int height, float vertical_offset) {
         camera.offset = new Vector2 (width / 2.0f, height / 2.0f + vertical_offset);
 
         // Calculate camera bounds - the box in which the player can move freely without pushing the camera
@@ -204,11 +202,9 @@ public class Game : GLib.Application {
 
         // Horizontal push
         if (player.position.x < bound_left) {
-            print ("Player crossed left boundary!\n");
             // Create a new Vector2 to update the camera target
             camera.target = new Vector2 (player.position.x + width / 4.0f, camera.target.y);
         } else if (player.position.x > bound_right) {
-            print ("Player crossed right boundary!\n");
             camera.target = new Vector2 (player.position.x - width / 4.0f, camera.target.y);
         }
 
@@ -222,11 +218,11 @@ public class Game : GLib.Application {
         }
     }
 
-    private void update_camera_even_out_on_landing (Player player, float delta, int width, int height, float vertical_offset) {
-        const float min_speed = 50;
-        const float min_effect_length = 10;
-        const float fraction_speed = 0.8f;
-        const float even_out_speed = 100.0f;
+    private void update_camera_even_out_on_landing (PlayerBody player, float delta, int width, int height, float vertical_offset) {
+        const float MIN_SPEED = 50;
+        const float MIN_EFFECT_LENGTH = 10;
+        const float FRACTION_SPEED = 0.8f;
+        const float EVEN_OUT_SPEED = 100.0f;
 
         /* Camera zoom controls */
         camera.zoom += ((float) Mouse.wheel_move.y * 0.05f);
@@ -246,8 +242,8 @@ public class Game : GLib.Application {
         Vector2 diff = new Vector2 (player.position.x - camera.target.x, player.position.y - camera.target.y);
         float length = (float) Math.sqrt (diff.x * diff.x + diff.y * diff.y);
 
-        if (length > min_effect_length) {
-            float speed = (float) Math.fmax (fraction_speed * length, min_speed);
+        if (length > MIN_EFFECT_LENGTH) {
+            float speed = (float) Math.fmax (FRACTION_SPEED * length, MIN_SPEED);
             camera.target = new Vector2 (
                 camera.target.x + diff.x * speed * delta / length,
                 camera.target.y + diff.y * speed * delta / length
@@ -258,12 +254,12 @@ public class Game : GLib.Application {
             if (camera.target.y < player.position.y) {
                 camera.target = new Vector2 (
                     camera.target.x,
-                    camera.target.y + (float) Math.fmin (player.position.y - camera.target.y, even_out_speed * delta)
+                    camera.target.y + (float) Math.fmin (player.position.y - camera.target.y, EVEN_OUT_SPEED * delta)
                 );
             } else if (camera.target.y > player.position.y) {
                 camera.target = new Vector2 (
                     camera.target.x,
-                    camera.target.y - (float) Math.fmin (camera.target.y - player.position.y, even_out_speed * delta)
+                    camera.target.y - (float) Math.fmin (camera.target.y - player.position.y, EVEN_OUT_SPEED * delta)
                 );
             }
         }
@@ -275,7 +271,10 @@ public class Game : GLib.Application {
         Font.DEFAULT.draw_text ("- Space to jump", new Shapes.Vector2 (40, 60), 10, null, Color.DARK_GRAY);
         Font.DEFAULT.draw_text ("- Mouse Wheel to Zoom in-out, R to reset zoom", new Shapes.Vector2 (40, 80), 10, null, Color.DARK_GRAY);
         Font.DEFAULT.draw_text ("- Press C to change camera mode", new Shapes.Vector2 (40, 100), 10, null, Color.DARK_GRAY);
-    }
+        string camera_mode_text = "- Press C to change camera mode (Current: " + current_camera_mode.to_string () + ")";
+        Font.DEFAULT.draw_text (camera_mode_text, new Shapes.Vector2 (40, 100), 10, null, Color.DARK_GRAY);
+
+    }   
 
     public static int main (string[] args) {
         var app = new Game ();
