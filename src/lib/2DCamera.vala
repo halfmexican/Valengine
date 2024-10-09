@@ -100,8 +100,7 @@ namespace Valengine {
                 case CameraMode.FOLLOW_PLAYER_SMOOTH:
                     update_camera_center_smooth_follow (target_body, delta, width, height, vertical_offset);
                     break;
-                case CameraMode.EVEN_OUT_ON_LANDING:                print ("Player crossed bottom boundary!\n");
-
+                case CameraMode.EVEN_OUT_ON_LANDING:     
                     update_camera_even_out_on_landing (target_body, delta, width, height, vertical_offset);
                     break;
                 case CameraMode.PLAYER_BOUNDS_PUSH:
