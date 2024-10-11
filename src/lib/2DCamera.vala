@@ -93,6 +93,21 @@ namespace Valengine {
         }
 
         public void update_camera_combined (CharacterBody target_body, float delta, int width, int height, float vertical_offset, CameraMode mode) {
+            
+             /* Camera zoom controls */
+             iCamera.zoom += ((float) Mouse.wheel_move.y * 0.05f);
+             if (iCamera.zoom > 3.0f) {
+                 iCamera.zoom = 3.0f;
+             } else if (iCamera.zoom < 0.1f) {
+                 iCamera.zoom = 0.1f;
+             }
+ 
+             /* Reset iCamera controls */
+             if (Keyboard.is_down (Keyboard.Key.R)) {
+                 iCamera.zoom = 1.0f;
+                 iCamera.rotation = 0.0f;
+             }
+            
             switch (mode) {
                 case CameraMode.FOLLOW_PLAYER:
                     update_camera_center (target_body, delta, width, height, vertical_offset);
@@ -154,20 +169,6 @@ namespace Valengine {
             const float MIN_EFFECT_LENGTH = 10;
             const float FRACTION_SPEED = 0.8f;
             const float EVEN_OUT_SPEED = 100.0f;
-
-            /* Camera zoom controls */
-            iCamera.zoom += ((float) Mouse.wheel_move.y * 0.05f);
-            if (iCamera.zoom > 3.0f) {
-                iCamera.zoom = 3.0f;
-            } else if (iCamera.zoom < 0.1f) {
-                iCamera.zoom = 0.1f;
-            }
-
-            /* Reset iCamera controls */
-            if (Keyboard.is_down (Keyboard.Key.R)) {
-                iCamera.zoom = 1.0f;
-                iCamera.rotation = 0.0f;
-            }
 
             iCamera.offset = new Vector2 (width / 2.0f, height / 2.0f + vertical_offset).iVector;
             Vector2 diff = new Vector2 (target_body.position.x - iCamera.target.x, target_body.position.y - iCamera.target.y);
