@@ -86,7 +86,7 @@ public class BasicWindow : Application {
 
     public static int main (string[] args) {
         /* Force Logs to Show */
-        Environment.set_variable ("G_MESSAGES_DEBUG", "all", true);
+        GLib.Environment.set_variable ("G_MESSAGES_DEBUG", "all", true);
         /* Create GLib.Application */
         var app = new BasicWindow ();
         /* Handle Args */
