@@ -28,25 +28,12 @@ public class Game : GLib.Application {
 
     // Player & Environment
     private PlayerBody player;
-    private EnvItem[] env_items;
+    private Valengine.Environment world;
 
-    public class EnvItem {
-        public Rectangle rect;
-        public bool blocking;
-        public Color color;
-
-        public EnvItem (float x, float y, float width, float height, bool blocking, Color color) {
-            rect = new Rectangle (x, y, width, height);
-            this.blocking = blocking;
-            this.color = color;
-        }
-    }
-
-    // Constructor
     private Game () {
         Object (application_id: "io.github.halfmexican.Valengine", flags: ApplicationFlags.FLAGS_NONE);
     }
-    
+
     // First method called when the application is started
     public override void activate () {
         try {
@@ -56,13 +43,13 @@ public class Game : GLib.Application {
         }
 
         player = new PlayerBody (400, 280);
-        env_items = {
-            new EnvItem (0, 0, 1000, 400, false, Color.SKY_BLUE),
-            new EnvItem (0, 400, 1000, 200, true, Color.GRAY),
-            new EnvItem (300, 200, 400, 10, true, Color.GRAY),
-            new EnvItem (250, 300, 100, 10, true, Color.GRAY),
-            new EnvItem (650, 300, 100, 10, true, Color.GRAY)
-        };
+        world = new Valengine.Environment ();
+        
+        world.add_item (new EnvironmentItem (0, 0, 1000, 400, false));
+        world.add_item (new EnvironmentItem (0, 400, 1000, 200, true));
+        world.add_item (new EnvironmentItem (300, 200, 400, 10, true));
+        world.add_item (new EnvironmentItem (250, 300, 100, 10, true));
+        world.add_item (new EnvironmentItem (650, 300, 100, 10, true));
 
         camera = new 2DCamera.from_character_body (player, 0.0f, 1.0f);
 
@@ -85,7 +72,7 @@ public class Game : GLib.Application {
 
         float delta_time = window.frame_time;
 
-        player.update (delta_time);
+        player.update_player (delta_time, world.env_items);
         camera.update_camera_combined (player, delta_time, SCREEN_WIDTH, SCREEN_HEIGHT, 40.0f, current_camera_mode);
 
         if (Keyboard.is_pressed (Keyboard.Key.C)) {
@@ -95,11 +82,13 @@ public class Game : GLib.Application {
         window.draw (() => {
             window.clear_background (Color.LIGHT_GRAY);
             camera.draw (() => {
-                foreach (var ei in env_items) {
-                    ei.rect.draw (ei.color, null, 0);
+                foreach (var ei in world.env_items) {
+                    //ei.draw ();
                 }
-                //Rectangle player_rect = new Rectangle (player.position.x - 20, player.position.y - 40, 40, 40);
-                //player_rect.draw (Color.RED, null, 0);
+
+                world.draw ();
+                // Rectangle player_rect = new Rectangle (player.position.x - 20, player.position.y - 40, 40, 40);
+                // player_rect.draw (Color.RED, null, 0);
                 player.draw ();
                 var center_circle = new Circle (player.position.x, player.position.y, 5.0f);
                 center_circle.draw (Color.GOLD);
@@ -109,37 +98,6 @@ public class Game : GLib.Application {
         });
 
         return true;
-    }
-
-    private void update_player (float delta) {
-        if (Keyboard.is_down (Keyboard.Key.LEFT))player.position.x -= PLAYER_HOR_SPD * delta;
-        if (Keyboard.is_down (Keyboard.Key.RIGHT))player.position.x += PLAYER_HOR_SPD * delta;
-        if (Keyboard.is_down (Keyboard.Key.SPACE) && player.can_jump) {
-            player.speed = -PLAYER_JUMP_SPD;
-            player.can_jump = false;
-        }
-
-        bool hit_obstacle = false;
-        foreach (var ei in env_items) {
-            if (ei.blocking &&
-                ei.rect.x <= player.position.x &&
-                ei.rect.x + ei.rect.width >= player.position.x &&
-                ei.rect.y >= player.position.y &&
-                ei.rect.y <= player.position.y + player.speed * delta) {
-                hit_obstacle = true;
-                player.speed = 0.0f;
-                player.position.y = ei.rect.y;
-                break;
-            }
-        }
-
-        if (!hit_obstacle) {
-            player.position.y += player.speed * delta;
-            player.speed += G * delta;
-            player.can_jump = false;
-        } else {
-            player.can_jump = true;
-        }
     }
 
     private void draw_instructions () {

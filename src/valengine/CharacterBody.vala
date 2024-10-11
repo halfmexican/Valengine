@@ -30,5 +30,15 @@ namespace Valengine {
             // Draw the collision shape
             collision_shape.draw (is_blocking ? Color.GREEN : Color.RED, null, 0);
         }
+
+        public bool collides_with (EnvironmentItem ei, float delta) {
+            return (
+                ei.blocking &&
+                ei.rect.x <= position.x &&
+                ei.rect.x + ei.rect.width >= position.x &&
+                ei.rect.y >= position.y &&
+                ei.rect.y <= position.y + speed * delta
+            );
+        }
     }
 }
