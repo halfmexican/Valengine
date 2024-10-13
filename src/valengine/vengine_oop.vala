@@ -37,14 +37,14 @@ public class Game : GLib.Application {
     // First method called when the application is started
     public override void activate () {
         try {
-            window = new Window (SCREEN_WIDTH, SCREEN_HEIGHT, "Valengine [core] example - 2d camera");
+            window = new Window (SCREEN_WIDTH, SCREEN_HEIGHT, "Valengine - Example");
         } catch (WindowError e) {
             error (e.message);
         }
 
         player = new PlayerBody (400, 280);
         world = new Valengine.Environment ();
-        
+
         world.add_item (new EnvironmentItem (0, 0, 1000, 400, false));
         world.add_item (new EnvironmentItem (0, 400, 1000, 200, true));
         world.add_item (new EnvironmentItem (300, 200, 400, 10, true));
@@ -82,18 +82,11 @@ public class Game : GLib.Application {
         window.draw (() => {
             window.clear_background (Color.LIGHT_GRAY);
             camera.draw (() => {
-                foreach (var ei in world.env_items) {
-                    //ei.draw ();
-                }
-
                 world.draw ();
-                // Rectangle player_rect = new Rectangle (player.position.x - 20, player.position.y - 40, 40, 40);
-                // player_rect.draw (Color.RED, null, 0);
                 player.draw ();
                 var center_circle = new Circle (player.position.x, player.position.y, 5.0f);
                 center_circle.draw (Color.GOLD);
             });
-
             draw_instructions ();
         });
 
