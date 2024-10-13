@@ -28,6 +28,10 @@ namespace Valengine {
             public void draw_circle () {
             }
 
+            public float get_length () {
+                return (float) Math.sqrt (this.iVector.x * this.iVector.x + this.iVector.y * this.iVector.y);
+            }
+
             /* Properties */
             public float x {
                 get {
@@ -43,6 +47,14 @@ namespace Valengine {
                 }
                 set {
                     this.iVector.y = value;
+                }
+            }
+            public Vector2 normalize () {
+                float length = this.get_length ();
+                if (length != 0) {
+                    return new Vector2 (this.iVector.x /= length, this.iVector.y /= length);
+                } else {
+                    return this;
                 }
             }
         }
