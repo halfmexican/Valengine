@@ -92,22 +92,40 @@ namespace Valengine {
             }
         }
 
+        /*
+         *
+         * Copyright (c) 2024 Jose Hunter
+         *
+         * This program is free software: you can redistribute it and/or modify
+         * it under the terms of the GNU General Public License as published by
+         * the Free Software Foundation, either version 3 of the License, or
+         * (at your option) any later version.
+         *
+         * This program is distributed in the hope that it will be useful,
+         * but WITHOUT ANY WARRANTY; without even the implied warranty of
+         * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+         * GNU General Public License for more details.
+         *
+         * You should have received a copy of the GNU General Public License
+         * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+         */
+
         public void update_camera_combined (CharacterBody target_body, float delta, int width, int height, float vertical_offset, CameraMode mode) {
-            
-             /* Camera zoom controls */
-             iCamera.zoom += ((float) Mouse.wheel_move.y * 0.05f);
-             if (iCamera.zoom > 3.0f) {
-                 iCamera.zoom = 3.0f;
-             } else if (iCamera.zoom < 0.1f) {
-                 iCamera.zoom = 0.1f;
-             }
- 
-             /* Reset iCamera controls */
-             if (Keyboard.is_down (Keyboard.Key.R)) {
-                 iCamera.zoom = 1.0f;
-                 iCamera.rotation = 0.0f;
-             }
-            
+
+            /* Camera zoom controls */
+            iCamera.zoom += ((float) Mouse.wheel_move.y * 0.05f);
+            if (iCamera.zoom > 3.0f) {
+                iCamera.zoom = 3.0f;
+            } else if (iCamera.zoom < 0.1f) {
+                iCamera.zoom = 0.1f;
+            }
+
+            /* Reset iCamera controls */
+            if (Keyboard.is_down (Keyboard.Key.R)) {
+                iCamera.zoom = 1.0f;
+                iCamera.rotation = 0.0f;
+            }
+
             switch (mode) {
                 case CameraMode.FOLLOW_PLAYER:
                     update_camera_center (target_body, delta, width, height, vertical_offset);
@@ -115,7 +133,7 @@ namespace Valengine {
                 case CameraMode.FOLLOW_PLAYER_SMOOTH:
                     update_camera_center_smooth_follow (target_body, delta, width, height, vertical_offset);
                     break;
-                case CameraMode.EVEN_OUT_ON_LANDING:     
+                case CameraMode.EVEN_OUT_ON_LANDING:
                     update_camera_even_out_on_landing (target_body, delta, width, height, vertical_offset);
                     break;
                 case CameraMode.PLAYER_BOUNDS_PUSH:
