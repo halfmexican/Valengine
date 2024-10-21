@@ -7,7 +7,7 @@ namespace Valengine {
         private MainLoop loop;
         private uint timeout_id;
 
-        private const int TILE_SIZE = 16;
+        private const int TILE_SIZE = 32;
         private const int ROWS = 30;
         private const int COLS = 20;
         private const int SCREEN_WIDTH = ROWS * TILE_SIZE;
@@ -37,7 +37,6 @@ namespace Valengine {
                 window = new Window (SCREEN_WIDTH, SCREEN_HEIGHT, "Snake");
             } catch (WindowError e) {
                 error ("Failed to create window: %s", e.message);
-                return;
             }
             window.target_fps = 10;
 
@@ -58,7 +57,7 @@ namespace Valengine {
 
             // Clean up resources
 
-            window = null; // Set window to null instead of calling close()
+            window = null;
         }
 
         private void update () {
@@ -124,13 +123,13 @@ namespace Valengine {
 
         private void draw () {
             window.draw (() => {
-                window.clear_background (Color.WHITE);
+                window.clear_background (Color.BLACK);
                 // Draw vertical lines
                 for (int i = 0; i <= SCREEN_WIDTH / TILE_SIZE; i++) {
                     Shapes.Line.draw (
                         new Vector2 (i * TILE_SIZE, 0),
                         new Vector2 (i * TILE_SIZE, SCREEN_HEIGHT),
-                        Color.LIGHT_GRAY
+                        Color.DARK_GRAY
                     );
                 }
 
@@ -139,7 +138,7 @@ namespace Valengine {
                     Shapes.Line.draw (
                         new Vector2 (0, i * TILE_SIZE),
                         new Vector2 (SCREEN_WIDTH, i * TILE_SIZE),
-                        Color.LIGHT_GRAY
+                        Color.DARK_GRAY
                     );
                 }
                 if (!game_over) {
@@ -157,12 +156,10 @@ namespace Valengine {
                         }
                     }
                     // Draw score
-                    Font.DEFAULT.draw_text ("SCORE: " + score.to_string (), new Vector2 (10f, 20f), 20, 20, Color.BLACK);
+                    Font.DEFAULT.draw_text ("SCORE: " + score.to_string (), new Vector2 (10f, 20f), 20, 20, Color.WHITE);
                 } else {
                     // Draw game over text
                     string game_over_text = "You lost!";
-                    // Assume a method to measure text width
-                    // int textWidth = measure_text_width(gameOverText, 50);
                     Font.DEFAULT.draw_text (game_over_text, new Vector2 ((SCREEN_WIDTH - 200) / 2, SCREEN_HEIGHT / 2 - 25), 50, null, Color.RED);
                 }
             });
