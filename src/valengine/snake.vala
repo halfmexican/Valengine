@@ -118,7 +118,33 @@ namespace Valengine {
                     food_pos[0] = Random.int_range (0, ROWS - 1);
                     food_pos[1] = Random.int_range (0, COLS - 1);
                 }
+            } else {
+                // Check for restart input
+                if (Keyboard.is_down (Keyboard.Key.R)) {
+                    restart_game();
+                }
             }
+        }
+
+        private void restart_game() {
+            // Reset game variables
+            snake_pos[0] = ROWS / 2;
+            snake_pos[1] = COLS / 2;
+            snake_direction = 0;
+            snake_length = 2;
+            score = 0;
+            game_over = false;
+
+            // Clear the snake_part_time array
+            for (int i = 0; i < ROWS; i++) {
+                for (int j = 0; j < COLS; j++) {
+                    snake_part_time[i, j] = 0;
+                }
+            }
+
+            // Reposition food
+            food_pos[0] = Random.int_range (0, ROWS - 1);
+            food_pos[1] = Random.int_range (0, COLS - 1);
         }
 
         private void draw () {
