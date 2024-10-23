@@ -27,7 +27,7 @@ public class Game : GLib.Application {
     };
 
     // Player & Environment
-    private PlayerBody player;
+    private PlatformerBody player;
     private EnvItem[] env_items;
 
     public class EnvItem {
@@ -55,7 +55,7 @@ public class Game : GLib.Application {
             error (e.message);
         }
 
-        player = new PlayerBody (400, 280);
+        player = new PlatformerBody (400, 280);
         env_items = {
             new EnvItem (0, 0, 1000, 400, false, Color.SKY_BLUE),
             new EnvItem (0, 400, 1000, 200, true, Color.GRAY),
