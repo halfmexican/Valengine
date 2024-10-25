@@ -9,5 +9,5 @@ option(
 	'valengine',
 	type: 'boolean',
 	value: true,
-	description: 'Build the Test Applications.'
+	description: 'Build the Valengine Lib'
 )

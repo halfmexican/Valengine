@@ -55,21 +55,18 @@ project_dependency = [
 	cc.find_library('m', required: false),
 	gee_dep
 ]
-
-# Valengine Library Sources
-subdir('src/lib')
-
-# Valengine Library
-valengine_lib = shared_library(
-	'valengine',
-	sources: valengine_src,
-	dependencies: project_dependency,
-	install: true,
-	vala_args: ['--vapi-comments'],
-	version: version,
-	install_dir: [true, true, true],
-)
-
+	subdir('src/lib')
+	subdir('src/valengine')
+	valengine_lib = shared_library(
+		'valengine',
+		sources: [lib_src, valengine_sources],
+		dependencies: project_dependency,
+		install: true,
+		vala_args: ['--vapi-comments'],
+		version: version,
+		install_dir: [true, true, true],
+	)
+	
 # pkgconfig
 pkg.generate(
 	valengine_lib,
@@ -84,5 +81,4 @@ valengine_dep = declare_dependency(
 )
 
 subdir('src/lib/examples')
-subdir('src/valengine')
-#subdir('src/valengine/examples')
+subdir('src/valengine/examples')

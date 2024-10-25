@@ -1,26 +1,12 @@
-# Valengine executable
-if get_option('valengine') == true
-    executable(
-        'valengine',
-        dependencies: [valengine_dep],
-        sources: [
-            'examples/vengine_oop.vala',
-            'meta/license.vala',
-            'meta/version.vala',
-        ],
-        install: true,
-    )
-endif
+valengine_sources = [	
+	'src/valengine/CameraModeEnum.vala',
+	'src/valengine/MovementTypeEnum.vala',
+	'src/valengine/CharacterBody.vala',
+	'src/valengine/PlayerBody.vala',
+	'src/valengine/PlatformerBody.vala',
+	'src/valengine/Food.vala',
+	'src/valengine/SnakeBody.vala',
+	'src/valengine/EnviromentItem.vala'
+	]
 
-# SnakeGame executable
-if get_option('valengine') == true
-    executable(
-        'snakegame',
-        dependencies: [valengine_dep],
-        sources: [
-            'examples/snake.vala',
-        ],
-        install: true,
-    )
-endif
 
