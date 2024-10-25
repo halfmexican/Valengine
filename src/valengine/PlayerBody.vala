@@ -1,7 +1,6 @@
 using GLib;
 using Valengine;
 using Valengine.Shapes;
-using Valengine.Input;
 
 namespace Valengine {
     public abstract class PlayerBody : CharacterBody {

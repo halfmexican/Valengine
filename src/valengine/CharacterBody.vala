@@ -1,17 +1,20 @@
 using GLib;
 using Valengine.Shapes;
-using Valengine.Input;
 
 namespace Valengine {
     public class CharacterBody : GLib.Object {
-        public Vector2 position;
-        public Vector2 velocity;
+        public float width { get; private set; }
+        public float height { get; private set; }
+        public Vector2 position { get; set;}
+        public Vector2 velocity { get;  set;}
         public float speed;
         public bool can_jump;
         public Rectangle collision_shape;
         public bool is_blocking;
 
         public CharacterBody (float x, float y, float width, float height, bool blocking) {
+            this.width = width;
+            this.height = height;
             position = new Vector2 (x, y);
             velocity = new Vector2 (0, 0);
             speed = 0;
