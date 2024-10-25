@@ -46,6 +46,7 @@ glib_dep = dependency('glib-2.0')
 gobject_dep = dependency('gobject-2.0')
 gio_dep = dependency('gio-2.0')
 raylib_dep = dependency('raylib', fallback: ['raylib', 'raylib_dep'])
+gee_dep = dependency('gee-0.8')
 
 project_dependency = [
 	glib_dep,
@@ -53,7 +54,8 @@ project_dependency = [
 	gio_dep,
 	raylib_dep,
 	valac.find_library('raylib', required: true, dirs: vapi_dir),
-	cc.find_library('m', required: false)
+	cc.find_library('m', required: false),
+	gee_dep
 ]
 
 # Valengine Library Sources
