@@ -1,7 +1,7 @@
 # Valengine executable
-if get_option('valengine') == true
+if get_option('examples') == true
     executable(
-        'valengine',
+        'examples',
         dependencies: [valengine_dep],
         sources: [
             'vengine_oop.vala',
@@ -11,7 +11,7 @@ if get_option('valengine') == true
 endif
 
 # SnakeGame executable
-if get_option('valengine') == true
+if get_option('examples') == true
     executable(
         'snakegame',
         dependencies: [valengine_dep],
