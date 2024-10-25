@@ -21,3 +21,14 @@ if get_option('examples') == true
         install: true,
     )
 endif
+
+if get_option('examples') == true
+    executable(
+        'pong',
+        dependencies: [valengine_dep],
+        sources: [
+            'pong.vala',
+        ],
+        install: true,
+    )
+endif
