@@ -4,7 +4,7 @@ if get_option('valengine') == true
         'valengine',
         dependencies: [valengine_dep],
         sources: [
-            'vengine_oop.vala',
+            'examples/vengine_oop.vala',
             'meta/license.vala',
             'meta/version.vala',
         ],
@@ -18,7 +18,7 @@ if get_option('valengine') == true
         'snakegame',
         dependencies: [valengine_dep],
         sources: [
-            'snake.vala',
+            'examples/snake.vala',
         ],
         install: true,
     )

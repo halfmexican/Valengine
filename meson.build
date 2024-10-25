@@ -11,9 +11,6 @@ source_dir = meson.current_source_dir()
 vapi_dir = source_dir / 'vapi'
 version = meson.project_version()
 
-# Build variables
-project_dependency = []
-
 # Compilers
 valac = meson.get_compiler('vala')
 cc = meson.get_compiler('c')
@@ -42,10 +39,12 @@ endif
 add_project_arguments(valac_arguments, language: 'vala')
 add_project_arguments(cc_arguments, language: 'c')
 
+# Dependencies
 glib_dep = dependency('glib-2.0')
 gobject_dep = dependency('gobject-2.0')
 gio_dep = dependency('gio-2.0')
 raylib_dep = dependency('raylib', fallback: ['raylib', 'raylib_dep'])
+gee_dep = dependency('gee-0.8')
 
 project_dependency = [
 	glib_dep,
@@ -53,7 +52,8 @@ project_dependency = [
 	gio_dep,
 	raylib_dep,
 	valac.find_library('raylib', required: true, dirs: vapi_dir),
-	cc.find_library('m', required: false)
+	cc.find_library('m', required: false),
+	gee_dep
 ]
 
 # Valengine Library Sources
@@ -85,3 +85,4 @@ valengine_dep = declare_dependency(
 
 subdir('src/lib/examples')
 subdir('src/valengine')
+#subdir('src/valengine/examples')
