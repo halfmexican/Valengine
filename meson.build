@@ -87,3 +87,4 @@ valengine_dep = declare_dependency(
 
 subdir('src/lib/examples')
 subdir('src/valengine')
+#subdir('src/valengine/examples')
