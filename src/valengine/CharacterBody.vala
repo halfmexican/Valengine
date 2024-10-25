@@ -5,8 +5,8 @@ namespace Valengine {
     public class CharacterBody : GLib.Object {
         public float width { get; private set; }
         public float height { get; private set; }
-        public Vector2 position { get; set;}
-        public Vector2 velocity { get;  set;}
+        public Vector2 position { get; private set;}
+        public Vector2 velocity { get;  private set;}
         public float speed;
         public bool can_jump;
         public Rectangle collision_shape;

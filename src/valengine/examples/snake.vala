@@ -128,7 +128,7 @@ namespace Valengine {
                 } else {
                     // Draw game over text
                     string game_over_text = "You lost! Press R to restart";
-                    Font.DEFAULT.draw_text (game_over_text, new Vector2 ((SCREEN_WIDTH - 200) / 2, SCREEN_HEIGHT / 2 - 25), 40, null, Color.RED);
+                    Font.DEFAULT.draw_text (game_over_text, new Vector2 ((SCREEN_WIDTH - 40) / 4, SCREEN_HEIGHT / 2 - 25), 40, null, Color.RED);
                 }
             });
         }

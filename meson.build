@@ -11,9 +11,6 @@ source_dir = meson.current_source_dir()
 vapi_dir = source_dir / 'vapi'
 version = meson.project_version()
 
-# Build variables
-project_dependency = []
-
 # Compilers
 valac = meson.get_compiler('vala')
 cc = meson.get_compiler('c')
@@ -42,6 +39,7 @@ endif
 add_project_arguments(valac_arguments, language: 'vala')
 add_project_arguments(cc_arguments, language: 'c')
 
+# Dependencies
 glib_dep = dependency('glib-2.0')
 gobject_dep = dependency('gobject-2.0')
 gio_dep = dependency('gio-2.0')
