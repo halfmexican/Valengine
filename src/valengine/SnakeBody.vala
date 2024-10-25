@@ -67,7 +67,7 @@ namespace Valengine {
 
         public bool check_self_collision () {
             for (int i = 1; i < body_segments.size; i++) {
-                if (position == body_segments[i])
+                if (position.x == body_segments[i].x && position.y == body_segments[i].y)
                     return true;
             }
             return false;
