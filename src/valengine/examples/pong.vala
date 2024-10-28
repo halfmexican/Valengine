@@ -82,14 +82,17 @@ namespace Valengine {
                 ball_velocity.y *= -1;
 
             // Paddle collisions
-            if (ball.x - ball.radius <= paddle_left.x + paddle_left.width &&
-                ball.y >= paddle_left.y && ball.y <= paddle_left.y + paddle_left.height)
-                ball_velocity.x *= -1.1f; // Increase speed slightly on hits
+            if (check_collision_circle_rect (ball, paddle_left)) {
+                // Adjust ball position to prevent sticking
+                ball.x = paddle_left.x + paddle_left.width + ball.radius;
+                // Reflect the ball's x velocity and slightly increase its speed
+                ball_velocity.x = Math.fabsf (ball_velocity.x * 1.1f);
+            }
 
-            if (ball.x + ball.radius >= paddle_right.x &&
-                ball.y >= paddle_right.y && ball.y <= paddle_right.y + paddle_right.height)
-                ball_velocity.x *= -1.1f;
-
+            if (check_collision_circle_rect (ball, paddle_right)) {
+                ball.x = paddle_right.x - ball.radius;
+                ball_velocity.x = -Math.fabsf (ball_velocity.x * 1.1f);
+            }
             // Score points
             if (ball.x < 0) {
                 score_right++;
@@ -130,4 +133,18 @@ namespace Valengine {
             return app.run (args);
         }
     }
+}
+
+private bool check_collision_circle_rect (Circle circle, Rectangle rect) {
+    // Find the closest point to the circle within the rectangle
+    float closest_x = float.max (float.min (circle.x, rect.x + rect.width), rect.x);
+    float closest_y = float.max (float.min (circle.y, rect.y + rect.height), rect.y);
+
+    // Calculate the distance between the circle's center and this closest point
+    float distance_x = circle.x - closest_x;
+    float distance_y = circle.y - closest_y;
+
+    // If the distance is less than the circle's radius, there is a collision
+    float distance_squared = (distance_x * distance_x) + (distance_y * distance_y);
+    return distance_squared < (circle.radius * circle.radius);
 }
