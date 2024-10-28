@@ -18,7 +18,7 @@ cc = meson.get_compiler('c')
 # Compiler arguments
 valac_arguments = [
 	'--vapidir', vapi_dir,
-	'--debug',
+	'--debug', 
 ]
 
 cc_arguments = []
@@ -29,6 +29,8 @@ if cc.has_argument('-g3')
 elif cc.has_argument('-g')
 	cc_arguments += '-g'
 endif
+
+cc_arguments+= '-w'
 
 if cc.has_link_argument('-Wl,--compress-debug-sections=zstd')
 	add_project_link_arguments('-Wl,--compress-debug-sections=zstd', language: 'c')
