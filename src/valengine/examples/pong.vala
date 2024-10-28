@@ -34,6 +34,9 @@ namespace Valengine {
             // Initialize game objects
             paddle_left = new Rectangle (50, SCREEN_HEIGHT / 2 - 40, 15, 80);
             paddle_right = new Rectangle (SCREEN_WIDTH - 65, SCREEN_HEIGHT / 2 - 40, 15, 80);
+
+            draw_paddle_with_end_circles (paddle_left, Color.WHITE);
+            draw_paddle_with_end_circles (paddle_right, Color.WHITE);
             ball = new Circle (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 10);
             reset_ball ();
 
@@ -52,6 +55,45 @@ namespace Valengine {
             ball.y = SCREEN_HEIGHT / 2;
             ball_velocity = new Vector2 (BALL_SPEED * (Random.int_range (0, 2) == 0 ? 1 : -1),
                                          BALL_SPEED * (Random.int_range (0, 2) == 0 ? 1 : -1));
+        }
+
+        private void draw_paddle_with_end_circles (Rectangle rect, Color color) {
+            // Draw central rectangle (original paddle rectangle)
+            rect.draw (color, null, 0);
+
+            // Calculate circle radius based on paddle width
+            float radius = rect.width / 2.0f;
+
+            // Draw top circle
+            Circle top_circle = new Circle (
+                rect.x + radius, // Center x
+                rect.y,          // Center y
+                radius
+            );
+            top_circle.draw (color);
+
+            // Draw bottom circle
+            Circle bottom_circle = new Circle (
+                rect.x + radius,         // Center x
+                rect.y + rect.height,    // Center y
+                radius
+            );
+            bottom_circle.draw (color);
+        }
+
+        private bool check_collision_circle_rect (Circle circle, Rectangle rect) {
+            float closest_x = clamp (circle.x, rect.x, rect.x + rect.width);
+            float closest_y = clamp (circle.y, rect.y, rect.y + rect.height);
+
+            float distance_x = circle.x - closest_x;
+            float distance_y = circle.y - closest_y;
+
+            float distance_squared = (distance_x * distance_x) + (distance_y * distance_y);
+            return distance_squared < (circle.radius * circle.radius);
+        }
+
+        private float clamp (float value, float min, float max) {
+            return (float) Math.fmax (min, Math.fmin (value, max));
         }
 
         private bool main_loop () {
@@ -77,15 +119,14 @@ namespace Valengine {
             ball.x += ball_velocity.x * delta;
             ball.y += ball_velocity.y * delta;
 
-            // Ball collisions
-            if (ball.y <= 0 || ball.y >= SCREEN_HEIGHT)
+            // Ball collisions with top and bottom walls
+            if (ball.y - ball.radius <= 0 || ball.y + ball.radius >= SCREEN_HEIGHT) {
                 ball_velocity.y *= -1;
+            }
 
             // Paddle collisions
             if (check_collision_circle_rect (ball, paddle_left)) {
-                // Adjust ball position to prevent sticking
                 ball.x = paddle_left.x + paddle_left.width + ball.radius;
-                // Reflect the ball's x velocity and slightly increase its speed
                 ball_velocity.x = Math.fabsf (ball_velocity.x * 1.1f);
             }
 
@@ -93,6 +134,7 @@ namespace Valengine {
                 ball.x = paddle_right.x - ball.radius;
                 ball_velocity.x = -Math.fabsf (ball_velocity.x * 1.1f);
             }
+
             // Score points
             if (ball.x < 0) {
                 score_right++;
@@ -103,7 +145,7 @@ namespace Valengine {
                 reset_ball ();
             }
 
-            // Draw
+            // Drawing code
             window.draw (() => {
                 window.clear_background (Color.BLACK);
 
@@ -113,9 +155,11 @@ namespace Valengine {
                     dash.draw (Color.WHITE, null, 0);
                 }
 
-                // Draw game objects
-                paddle_left.draw (Color.WHITE, null, 0);
-                paddle_right.draw (Color.WHITE, null, 0);
+                // Draw paddles with visual circles at the ends
+                draw_paddle_with_end_circles (paddle_left, Color.WHITE);
+                draw_paddle_with_end_circles (paddle_right, Color.WHITE);
+
+                // Draw the ball
                 ball.draw (Color.WHITE);
 
                 // Draw scores
@@ -133,18 +177,4 @@ namespace Valengine {
             return app.run (args);
         }
     }
-}
-
-private bool check_collision_circle_rect (Circle circle, Rectangle rect) {
-    // Find the closest point to the circle within the rectangle
-    float closest_x = float.max (float.min (circle.x, rect.x + rect.width), rect.x);
-    float closest_y = float.max (float.min (circle.y, rect.y + rect.height), rect.y);
-
-    // Calculate the distance between the circle's center and this closest point
-    float distance_x = circle.x - closest_x;
-    float distance_y = circle.y - closest_y;
-
-    // If the distance is less than the circle's radius, there is a collision
-    float distance_squared = (distance_x * distance_x) + (distance_y * distance_y);
-    return distance_squared < (circle.radius * circle.radius);
 }
