@@ -4,7 +4,7 @@ using Valengine.Input;
 
 namespace Valengine {
     public class 2DCamera : Object {
-        public Raylib.Camera2D iCamera;
+        internal Raylib.Camera2D iCamera;
 
         /* Constructors */
         public 2DCamera (Vector2 offset, Vector2 target, float rotation, float zoom) {
