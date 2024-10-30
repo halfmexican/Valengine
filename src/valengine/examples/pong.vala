@@ -34,9 +34,12 @@ namespace Valengine {
             // Initialize game objects
             paddle_left = new Rectangle (50, SCREEN_HEIGHT / 2 - 40, 15, 80);
             paddle_right = new Rectangle (SCREEN_WIDTH - 65, SCREEN_HEIGHT / 2 - 40, 15, 80);
+            // Use draw_rounded to draw paddles with rounded corners
+            float roundness = 0.5f; // Value between 0.0f and 1.0f
+            int segments = 0;    // Use 0 for automatic segments calculation
+            paddle_left.draw_rounded (roundness, segments, 0.0f, Color.WHITE);
+            paddle_right.draw_rounded (roundness, segments, 0.0f, Color.WHITE);
 
-            draw_paddle_with_end_circles (paddle_left, Color.WHITE);
-            draw_paddle_with_end_circles (paddle_right, Color.WHITE);
             ball = new Circle (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 10);
             reset_ball ();
 
@@ -55,30 +58,6 @@ namespace Valengine {
             ball.y = SCREEN_HEIGHT / 2;
             ball_velocity = new Vector2 (BALL_SPEED * (Random.int_range (0, 2) == 0 ? 1 : -1),
                                          BALL_SPEED * (Random.int_range (0, 2) == 0 ? 1 : -1));
-        }
-
-        private void draw_paddle_with_end_circles (Rectangle rect, Color color) {
-            // Draw central rectangle (original paddle rectangle)
-            rect.draw (color, null, 0);
-
-            // Calculate circle radius based on paddle width
-            float radius = rect.width / 2.0f;
-
-            // Draw top circle
-            Circle top_circle = new Circle (
-                rect.x + radius, // Center x
-                rect.y,          // Center y
-                radius
-            );
-            top_circle.draw (color);
-
-            // Draw bottom circle
-            Circle bottom_circle = new Circle (
-                rect.x + radius,         // Center x
-                rect.y + rect.height,    // Center y
-                radius
-            );
-            bottom_circle.draw (color);
         }
 
         private bool check_collision_circle_rect (Circle circle, Rectangle rect) {
@@ -155,9 +134,12 @@ namespace Valengine {
                     dash.draw (Color.WHITE, null, 0);
                 }
 
-                // Draw paddles with visual circles at the ends
-                draw_paddle_with_end_circles (paddle_left, Color.WHITE);
-                draw_paddle_with_end_circles (paddle_right, Color.WHITE);
+                // Use draw_rounded to draw paddles with rounded corners
+                float roundness = 0.5f; // Value between 0.0f and 1.0f
+                int segments = 0; // Use 0 for automatic segments calculation
+                paddle_left.draw_rounded (roundness, segments, 0.0f, Color.WHITE);
+                paddle_right.draw_rounded (roundness, segments, 0.0f, Color.WHITE);
+
 
                 // Draw the ball
                 ball.draw (Color.WHITE);
