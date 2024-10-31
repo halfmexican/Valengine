@@ -92,7 +92,7 @@ namespace Valengine {
                     Shapes.Line.draw (
                         new Vector2 (i * TILE_SIZE, 0),
                         new Vector2 (i * TILE_SIZE, SCREEN_HEIGHT),
-                        Color.GRAY
+                        Color.DARK_GRAY
                     );
                 }
 
@@ -101,7 +101,7 @@ namespace Valengine {
                     Shapes.Line.draw (
                         new Vector2 (0, i * TILE_SIZE),
                         new Vector2 (SCREEN_WIDTH, i * TILE_SIZE),
-                        Color.GRAY
+                        Color.DARK_GRAY
                     );
                 }
                 if (!game_over) {
@@ -124,11 +124,12 @@ namespace Valengine {
                         );
                         snake_rect.draw (Color.GREEN, null, 0.0f);
                     }
-                    // Draw score                    Font.DEFAULT.draw_text ("SCORE: " + score.to_string (), new Vector2 (10f, 20f), 20, 20, Color.BLACK);
+                    // Draw score                    
+                    Font.DEFAULT.draw_text ("SCORE:" + score.to_string (), new Vector2 (10f, 10f), 20, 10, Color.RED);
                 } else {
                     // Draw game over text
                     string game_over_text = "You lost! Press R to restart";
-                    Font.DEFAULT.draw_text (game_over_text, new Vector2 ((SCREEN_WIDTH - 40) / 4, SCREEN_HEIGHT / 2 - 25), 40, null, Color.RED);
+                    Font.DEFAULT.draw_text (game_over_text, new Vector2 ((SCREEN_WIDTH ) / 4, SCREEN_HEIGHT / 2 ), 40, null, Color.RED);
                 }
             });
         }
