@@ -83,7 +83,8 @@ public class Game : GLib.Application {
         window.draw (() => {
             window.clear_background (Color.LIGHT_GRAY);
             camera.draw (() => {
-
+                
+                // Scrolling zoom
                 camera.zoom += Mouse.get_mouse_wheel_move () * 0.05f;
                 if (camera.zoom > 3.0f) camera.zoom = 3.0f;
                 else if (camera.zoom < 0.25f) camera.zoom = 0.25f;
@@ -93,9 +94,12 @@ public class Game : GLib.Application {
                     player.position = new Vector2 (400, 280);
                 }
 
+                // Draw environment
                 foreach (var ei in env_items) {
                     ei.rect.draw (ei.color, null, 0);
                 }
+                
+                // Draw player
                 Rectangle player_rect = new Rectangle (player.position.x - 20, player.position.y - 40, 40, 40);
                 player_rect.draw (Color.RED, null, 0);
                 var center_rect = new Circle (player.position.x, player.position.y, 5.0f);

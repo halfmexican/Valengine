@@ -4,15 +4,18 @@ using Valengine.Input;
 
 namespace Valengine {
     public class PongGame : GLib.Application {
+        // Window
         private Window window;
         private MainLoop loop;
         private TimeoutSource timeout;
 
+        // Constants
         private const int SCREEN_WIDTH = 800;
         private const int SCREEN_HEIGHT = 450;
         private const float PADDLE_SPEED = 300;
         private const float BALL_SPEED = 300;
 
+        // Game objects
         private Rectangle paddle_left;
         private Rectangle paddle_right;
         private Circle ball;
@@ -24,6 +27,7 @@ namespace Valengine {
             Object (application_id: "io.github.valengine.pong", flags: ApplicationFlags.FLAGS_NONE);
         }
 
+        // First method called when the application is started
         public override void activate () {
             try {
                 window = new Window (SCREEN_WIDTH, SCREEN_HEIGHT, "Valengine Pong");
