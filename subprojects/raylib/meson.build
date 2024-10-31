@@ -103,10 +103,10 @@ if platform == 'desktop'
 			'source/src/external/glfw/deps/mingw'
 		]
 		src += 'source/src/rglfw.c'
-		if os != 'windows' and os != 'darwin'
+		if host_machine.system() != 'windows'
 			deps += [
 				dependency('gl'),
-				dependency('x11'),
+				dependency('x11', required: true),
 				dependency('xcursor'),
 				dependency('xrandr'),
 				dependency('xinerama'),
@@ -138,6 +138,7 @@ c_args += [
 	'-DSUPPORT_FILEFORMAT_MOD',
 	'-DBUILD_LIBTYPE_SHARED',
 	'-D_GNU_SOURCE',
+	'-DUSE_WAYLAND',
 	'-Wno-missing-braces',
 	'-Werror=pointer-arith',
 	'-Werror=implicit-function-declaration',
