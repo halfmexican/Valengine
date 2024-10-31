@@ -1,10 +1,10 @@
 # Valengine executable
 if get_option('examples') == true
     executable(
-        'examples',
+        'platformer',
         dependencies: [valengine_dep],
         sources: [
-            'vengine_oop.vala',
+            'platformer.vala',
         ],
         install: true,
     )

@@ -34,7 +34,7 @@ public class Game : GLib.Application {
     private Game () {
         Object (application_id: "io.github.halfmexican.Valengine", flags: ApplicationFlags.FLAGS_NONE);
     }
-    
+
     // First method called when the application is started
     public override void activate () {
         try {
@@ -83,6 +83,16 @@ public class Game : GLib.Application {
         window.draw (() => {
             window.clear_background (Color.LIGHT_GRAY);
             camera.draw (() => {
+
+                camera.zoom += Mouse.get_mouse_wheel_move () * 0.05f;
+                if (camera.zoom > 3.0f) camera.zoom = 3.0f;
+                else if (camera.zoom < 0.25f) camera.zoom = 0.25f;
+
+                if (Keyboard.is_pressed (Keyboard.Key.R)) {
+                    camera.zoom = 1.0f;
+                    player.position = new Vector2 (400, 280);
+                }
+
                 foreach (var ei in env_items) {
                     ei.rect.draw (ei.color, null, 0);
                 }
