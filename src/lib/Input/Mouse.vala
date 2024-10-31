@@ -113,6 +113,13 @@ namespace Valengine {
 				}
 			}
 			/**
+			* Scroll wheel
+			*/
+			public static float get_mouse_wheel_move () {
+				return Raylib.get_mouse_wheel_move();
+			}	
+
+			/**
 			* Mouse position X
 			*/
 			public static int x {
