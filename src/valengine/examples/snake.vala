@@ -1,11 +1,12 @@
 using Valengine;
 using Valengine.Shapes;
 using Valengine.Input;
+
 namespace Valengine {
     public class SnakeGame : GLib.Application {
         private Window window;
         private MainLoop loop;
-        private uint timeout_id;
+        private TimeoutSource timeout;
 
         private const int TILE_SIZE = 32;
         private const int ROWS = 30;
@@ -20,33 +21,27 @@ namespace Valengine {
 
         public SnakeGame () {
             Object (application_id: "io.github.valengine.snakegame", flags: ApplicationFlags.FLAGS_NONE);
+        }
 
+        // First method called when the application is started
+        public override void activate () {
             try {
-                window = new Window (SCREEN_WIDTH, SCREEN_HEIGHT, "Snake");
+                window = new Window (SCREEN_WIDTH, SCREEN_HEIGHT, "Valengine Snake");
             } catch (WindowError e) {
                 error ("Failed to create window: %s", e.message);
                 return;
             }
+
             window.target_fps = 10;
 
             reset_game ();
 
             loop = new MainLoop ();
-            timeout_id = Timeout.add (1, () => {
-                if (window.should_close) {
-                    loop.quit ();
-                    return false;
-                }
-
-                update ();
-                draw ();
-
-                return true;
-            });
+            timeout = new TimeoutSource (1);
+            timeout.set_callback (main_loop);
+            timeout.attach (loop.get_context ());
 
             loop.run ();
-
-            window = null;
         }
 
         private void reset_game () {
@@ -56,9 +51,22 @@ namespace Valengine {
             score = 0;
         }
 
+        private bool main_loop () {
+            if (window.should_close) {
+                loop.quit ();
+                return false;
+            }
+
+            update ();
+            draw ();
+
+            return true;
+        }
+
         private void update () {
             if (!game_over) {
-                // First, update the snake's position
+
+                // Update the snake's position
                 snake.update (window.frame_time);
 
                 // Check if the snake eats food
@@ -69,7 +77,7 @@ namespace Valengine {
                     food.respawn (ROWS, COLS);
                 }
 
-                // Now, check for collisions with walls or self-collision
+                // Check for collisions with walls or self-collision
                 if (snake.position.x < 0 || snake.position.y < 0 ||
                     snake.position.x >= SCREEN_WIDTH || snake.position.y >= SCREEN_HEIGHT ||
                     snake.check_self_collision ()) {
@@ -87,7 +95,8 @@ namespace Valengine {
         private void draw () {
             window.draw (() => {
                 window.clear_background (Color.BLACK);
-                // Draw vertical lines
+
+                // Draw grid lines
                 for (int i = 0; i <= SCREEN_WIDTH / TILE_SIZE; i++) {
                     Shapes.Line.draw (
                         new Vector2 (i * TILE_SIZE, 0),
@@ -95,8 +104,6 @@ namespace Valengine {
                         Color.DARK_GRAY
                     );
                 }
-
-                // Draw horizontal lines
                 for (int i = 0; i <= SCREEN_HEIGHT / TILE_SIZE; i++) {
                     Shapes.Line.draw (
                         new Vector2 (0, i * TILE_SIZE),
@@ -104,6 +111,7 @@ namespace Valengine {
                         Color.DARK_GRAY
                     );
                 }
+
                 if (!game_over) {
                     // Draw food
                     Rectangle food_rect = new Rectangle (
