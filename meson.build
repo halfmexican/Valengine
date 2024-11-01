@@ -9,7 +9,9 @@ pkg = import('pkgconfig')
 # Variables
 source_dir = meson.current_source_dir()
 vapi_dir = source_dir / 'vapi'
+audio_source_dir = source_dir / 'src/valengine/audio'
 version = meson.project_version()
+
 
 # Compilers
 valac = meson.get_compiler('vala')
