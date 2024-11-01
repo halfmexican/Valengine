@@ -32,3 +32,15 @@ if get_option('examples') == true
         install: true,
     )
 endif
+
+
+if get_option('examples') == true
+    executable(
+        'texture_demo',
+        dependencies: [valengine_dep],
+        sources: [
+            'texture_demo.vala',
+        ],
+        install: true,
+    )
+endif

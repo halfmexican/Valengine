@@ -17,5 +17,8 @@ lib_src = [
 	'src/lib/Clipboard.vala',
 	'src/lib/Log.vala',
 	'src/lib/Automation/EventList.vala',
-	'src/lib/Text.vala',
+	'src/lib/Text.vala', 
+	#### Valengine ####
+	'src/lib/Graphics/Texture2D.vala',
+	'src/lib/Graphics/Image.vala',
 ]
