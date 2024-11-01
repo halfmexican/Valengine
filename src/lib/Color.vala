@@ -3,7 +3,7 @@ using Valengine.Util;
 namespace Valengine {
     public class Color : GLib.Object {
         /* Variables */
-        public Raylib.Color iColor;
+        internal Raylib.Color iColor;
         /* Constructors */
         /**
          * Creates a color from rgba

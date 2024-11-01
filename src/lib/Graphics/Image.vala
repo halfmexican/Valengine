@@ -3,7 +3,7 @@ namespace Valengine {
     namespace Graphics {
         public class Image : GLib.Object {
             /* Variables */
-            public Raylib.Image iImage;
+            internal Raylib.Image iImage;
             private bool isLoaded = false;
 
             /* Constructors */

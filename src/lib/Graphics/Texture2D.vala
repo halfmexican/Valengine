@@ -3,8 +3,8 @@ namespace Valengine {
     namespace Graphics {
         public class Texture : GLib.Object {
             /* Variables */
-            public Raylib.Texture2D iTexture;
-            private bool isLoaded = false;
+            internal Raylib.Texture2D iTexture;
+            private bool is_loaded = false;
 
             /* Constructors */
             /**
@@ -13,7 +13,7 @@ namespace Valengine {
             public Texture (string file) {
                 if (Raylib.is_texture_ready (this.iTexture) == false) {
                     this.iTexture = Raylib.load_texture (file);
-                    isLoaded = true;
+                    is_loaded = true;
                 }
             }
 
@@ -22,12 +22,12 @@ namespace Valengine {
              */
             public Texture.from_image (Graphics.Image image) {
                 this.iTexture = Raylib.load_texture_from_image (image.iImage);
-                isLoaded = true;
+                is_loaded = true;
             }
 
             /* Destroyer */
             ~Texture () {
-                if (isLoaded) {
+                if (is_loaded) {
                     Raylib.unload_texture (this.iTexture);
                 }
             }
@@ -127,4 +127,4 @@ namespace Valengine {
             }
         }
     }
-}   
+}
