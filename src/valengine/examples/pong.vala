@@ -27,7 +27,7 @@ namespace Valengine {
 
         // Audio
         private Sound ping;
-
+        private Sound pong;
 
         private PongGame () {
             Object (application_id: "io.github.valengine.pong", flags: ApplicationFlags.FLAGS_NONE);
@@ -44,6 +44,7 @@ namespace Valengine {
             // Initialize game objects
             paddle_left = new Rectangle (50, SCREEN_HEIGHT / 2 - 40, 15, 80);
             paddle_right = new Rectangle (SCREEN_WIDTH - 65, SCREEN_HEIGHT / 2 - 40, 15, 80);
+
             // Use draw_rounded to draw paddles with rounded corners
             float roundness = 0.5f; // Value between 0.0f and 1.0f
             int segments = 0;    // Use 0 for automatic segments calculation
@@ -59,8 +60,11 @@ namespace Valengine {
             timeout = new TimeoutSource (1);
             timeout.set_callback (main_loop);
             timeout.attach (loop.get_context ());
-            string sound_path = Path.build_filename (current_dir, "src/valengine/audio/ping.ogg");
-            ping = new Sound (sound_path);
+
+            // Load audio
+            string sound_path = Path.build_filename (current_dir, "src/valengine/audio/");
+            ping = new Sound (sound_path + "ping.ogg");
+            pong = new Sound (sound_path + "pickup_coin.ogg");
             loop.run ();
         }
 
@@ -69,6 +73,8 @@ namespace Valengine {
             ball.y = SCREEN_HEIGHT / 2;
             ball_velocity = new Vector2 (BALL_SPEED * (Random.int_range (0, 2) == 0 ? 1 : -1),
                                          BALL_SPEED * (Random.int_range (0, 2) == 0 ? 1 : -1));
+
+            if (pong != null)pong.playing = true;
         }
 
         private bool check_collision_circle_rect (Circle circle, Rectangle rect) {
