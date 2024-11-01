@@ -4,7 +4,7 @@ using Raylib;
 namespace Valengine {
     namespace Shapes {
         public class Rectangle : Object {
-            internal Raylib.Rectangle iRectangle;
+            public Raylib.Rectangle iRectangle;
             /* Constructors */
             public Rectangle (float x, float y, float width, float height) {
                 iRectangle.x = x;
