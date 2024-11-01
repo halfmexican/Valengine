@@ -12,7 +12,6 @@ public class Game : GLib.Application {
     // Constants
     private const int SCREEN_WIDTH = 800;
     private const int SCREEN_HEIGHT = 450;
-    private const int G = 400;
     private const float PLAYER_JUMP_SPD = 350.0f;
     private const float PLAYER_HOR_SPD = 200.0f;
 
@@ -73,7 +72,8 @@ public class Game : GLib.Application {
 
         float delta_time = window.frame_time;
 
-        update_player (delta_time);
+        //update_player (delta_time);
+        player.update_player (delta_time, env_items);
         camera.update_camera_combined (player, delta_time, SCREEN_WIDTH, SCREEN_HEIGHT, 40.0f, current_camera_mode);
 
         if (Keyboard.is_pressed (Keyboard.Key.C)) {
@@ -110,37 +110,6 @@ public class Game : GLib.Application {
         });
 
         return true;
-    }
-
-    private void update_player (float delta) {
-        if (Keyboard.is_down (Keyboard.Key.LEFT))player.position.x -= PLAYER_HOR_SPD * delta;
-        if (Keyboard.is_down (Keyboard.Key.RIGHT))player.position.x += PLAYER_HOR_SPD * delta;
-        if (Keyboard.is_down (Keyboard.Key.SPACE) && player.can_jump) {
-            player.speed = -PLAYER_JUMP_SPD;
-            player.can_jump = false;
-        }
-
-        bool hit_obstacle = false;
-        foreach (var ei in env_items) {
-            if (ei.blocking &&
-                ei.rect.x <= player.position.x &&
-                ei.rect.x + ei.rect.width >= player.position.x &&
-                ei.rect.y >= player.position.y &&
-                ei.rect.y <= player.position.y + player.speed * delta) {
-                hit_obstacle = true;
-                player.speed = 0.0f;
-                player.position.y = ei.rect.y;
-                break;
-            }
-        }
-
-        if (!hit_obstacle) {
-            player.position.y += player.speed * delta;
-            player.speed += G * delta;
-            player.can_jump = false;
-        } else {
-            player.can_jump = true;
-        }
     }
 
     private void draw_instructions () {

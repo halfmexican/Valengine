@@ -1,7 +1,7 @@
 using Valengine;
 using Valengine.Shapes;
 using Valengine.Input;
-
+using Valengine.Audio;
 namespace Valengine {
     public class PongGame : GLib.Application {
         // Window
@@ -14,6 +14,8 @@ namespace Valengine {
         private const int SCREEN_HEIGHT = 450;
         private const float PADDLE_SPEED = 300;
         private const float BALL_SPEED = 300;
+        string current_dir = Environment.get_current_dir ();
+
 
         // Game objects
         private Rectangle paddle_left;
@@ -22,6 +24,10 @@ namespace Valengine {
         private Vector2 ball_velocity;
         private int score_left = 0;
         private int score_right = 0;
+
+        // Audio
+        private Sound ping;
+        private Sound pong;
 
         private PongGame () {
             Object (application_id: "io.github.valengine.pong", flags: ApplicationFlags.FLAGS_NONE);
@@ -38,6 +44,7 @@ namespace Valengine {
             // Initialize game objects
             paddle_left = new Rectangle (50, SCREEN_HEIGHT / 2 - 40, 15, 80);
             paddle_right = new Rectangle (SCREEN_WIDTH - 65, SCREEN_HEIGHT / 2 - 40, 15, 80);
+
             // Use draw_rounded to draw paddles with rounded corners
             float roundness = 0.5f; // Value between 0.0f and 1.0f
             int segments = 0;    // Use 0 for automatic segments calculation
@@ -54,6 +61,10 @@ namespace Valengine {
             timeout.set_callback (main_loop);
             timeout.attach (loop.get_context ());
 
+            // Load audio
+            string sound_path = Path.build_filename (current_dir, "src/valengine/audio/");
+            ping = new Sound (sound_path + "ping.ogg");
+            pong = new Sound (sound_path + "pickup_coin.ogg");
             loop.run ();
         }
 
@@ -62,6 +73,8 @@ namespace Valengine {
             ball.y = SCREEN_HEIGHT / 2;
             ball_velocity = new Vector2 (BALL_SPEED * (Random.int_range (0, 2) == 0 ? 1 : -1),
                                          BALL_SPEED * (Random.int_range (0, 2) == 0 ? 1 : -1));
+
+            if (pong != null)pong.playing = true;
         }
 
         private bool check_collision_circle_rect (Circle circle, Rectangle rect) {
@@ -111,11 +124,13 @@ namespace Valengine {
             if (check_collision_circle_rect (ball, paddle_left)) {
                 ball.x = paddle_left.x + paddle_left.width + ball.radius;
                 ball_velocity.x = Math.fabsf (ball_velocity.x * 1.1f);
+                ping.playing = true;
             }
 
             if (check_collision_circle_rect (ball, paddle_right)) {
                 ball.x = paddle_right.x - ball.radius;
                 ball_velocity.x = -Math.fabsf (ball_velocity.x * 1.1f);
+                ping.playing = true;
             }
 
             // Score points
