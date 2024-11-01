@@ -26,8 +26,8 @@ namespace Valengine {
         private int score_right = 0;
 
         // Audio
-        private Sound ping;
-        private Sound pong;
+        private Sound? ping;
+        private Sound? pong;
 
         private PongGame () {
             Object (application_id: "io.github.valengine.pong", flags: ApplicationFlags.FLAGS_NONE);

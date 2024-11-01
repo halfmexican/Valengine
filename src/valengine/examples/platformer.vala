@@ -72,7 +72,7 @@ public class Game : GLib.Application {
 
         float delta_time = window.frame_time;
 
-        //update_player (delta_time);
+        // update_player (delta_time);
         player.update_player (delta_time, env_items);
         camera.update_camera_combined (player, delta_time, SCREEN_WIDTH, SCREEN_HEIGHT, 40.0f, current_camera_mode);
 
@@ -83,11 +83,11 @@ public class Game : GLib.Application {
         window.draw (() => {
             window.clear_background (Color.LIGHT_GRAY);
             camera.draw (() => {
-                
+
                 // Scrolling zoom
                 camera.zoom += Mouse.get_mouse_wheel_move () * 0.05f;
-                if (camera.zoom > 3.0f) camera.zoom = 3.0f;
-                else if (camera.zoom < 0.25f) camera.zoom = 0.25f;
+                if (camera.zoom > 3.0f)camera.zoom = 3.0f;
+                else if (camera.zoom < 0.25f)camera.zoom = 0.25f;
 
                 if (Keyboard.is_pressed (Keyboard.Key.R)) {
                     camera.zoom = 1.0f;
@@ -98,7 +98,7 @@ public class Game : GLib.Application {
                 foreach (var ei in env_items) {
                     ei.rect.draw (ei.color, null, 0);
                 }
-                
+
                 // Draw player
                 Rectangle player_rect = new Rectangle (player.position.x - 20, player.position.y - 40, 40, 40);
                 player_rect.draw (Color.RED, null, 0);
