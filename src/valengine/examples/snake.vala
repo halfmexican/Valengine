@@ -29,7 +29,6 @@ namespace Valengine {
                 window = new Window (SCREEN_WIDTH, SCREEN_HEIGHT, "Valengine Snake");
             } catch (WindowError e) {
                 error ("Failed to create window: %s", e.message);
-                return;
             }
 
             window.target_fps = 10;
