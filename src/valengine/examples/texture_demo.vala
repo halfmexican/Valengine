@@ -11,7 +11,7 @@ namespace Valengine {
 
         private const int SCREEN_WIDTH = 800;
         private const int SCREEN_HEIGHT = 600;
-        string image_path= Path.build_filename (Environment.get_current_dir (), "src/valengine/images/");
+        private string image_path= Path.build_filename (Environment.get_current_dir (), "src/valengine/images/");
 
         private Texture texture;
         private Image image;
