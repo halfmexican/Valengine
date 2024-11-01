@@ -11,7 +11,7 @@ namespace Valengine {
 			/**
 			* Load sound from a file.
 			*/
-			Sound(string file) {
+			public Sound(string file) {
 				if(Raylib.is_audio_device_ready() == false) {
 					Raylib.init_audio_device();
 				}
@@ -20,7 +20,7 @@ namespace Valengine {
 			/**
 			* Load sound from memory
 			*/
-			Sound.from_memory(uint8[] bytes, string fileType) {
+			public Sound.from_memory(uint8[] bytes, string fileType) {
 				if(Raylib.is_audio_device_ready() == false) {
 					Raylib.init_audio_device();
 				}
@@ -31,7 +31,7 @@ namespace Valengine {
 			/**
 			* Create a new sound that shares the same sample data as the source sound, does not own the sound data
 			*/
-			Sound.from_alias(Raylib.Sound source) {
+			public Sound.from_alias(Raylib.Sound source) {
 				if(Raylib.is_audio_device_ready() == false) {
 					Raylib.init_audio_device();
 				}
@@ -40,7 +40,7 @@ namespace Valengine {
 			/**
 			* Load sound from wave
 			*/
-			Sound.from_wave(Raylib.Wave wave) {
+			public Sound.from_wave(Raylib.Wave wave) {
 				if(Raylib.is_audio_device_ready() == false) {
 					Raylib.init_audio_device();
 				}

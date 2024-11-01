@@ -1,7 +1,7 @@
 using Valengine;
 using Valengine.Shapes;
 using Valengine.Input;
-
+using Valengine.Audio;
 namespace Valengine {
     public class PongGame : GLib.Application {
         // Window
@@ -14,6 +14,8 @@ namespace Valengine {
         private const int SCREEN_HEIGHT = 450;
         private const float PADDLE_SPEED = 300;
         private const float BALL_SPEED = 300;
+        string current_dir = Environment.get_current_dir ();
+
 
         // Game objects
         private Rectangle paddle_left;
@@ -22,6 +24,10 @@ namespace Valengine {
         private Vector2 ball_velocity;
         private int score_left = 0;
         private int score_right = 0;
+
+        // Audio
+        private Sound ping;
+
 
         private PongGame () {
             Object (application_id: "io.github.valengine.pong", flags: ApplicationFlags.FLAGS_NONE);
@@ -50,7 +56,8 @@ namespace Valengine {
             timeout = new TimeoutSource (1);
             timeout.set_callback (main_loop);
             timeout.attach (loop.get_context ());
-
+            string sound_path = Path.build_filename (current_dir, "src/valengine/audio/ping.ogg");
+            ping = new Sound (sound_path);
             loop.run ();
         }
 
@@ -132,11 +139,13 @@ namespace Valengine {
             if (check_collision_circle_rect (ball, paddle_left)) {
                 ball.x = paddle_left.x + paddle_left.width + ball.radius;
                 ball_velocity.x = Math.fabsf (ball_velocity.x * 1.1f);
+                ping.playing = true;
             }
 
             if (check_collision_circle_rect (ball, paddle_right)) {
                 ball.x = paddle_right.x - ball.radius;
                 ball_velocity.x = -Math.fabsf (ball_velocity.x * 1.1f);
+                ping.playing = true;
             }
 
             // Score points
