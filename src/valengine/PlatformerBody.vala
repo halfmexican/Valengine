@@ -16,8 +16,16 @@ namespace Valengine {
         }
 
         public void update_player (float delta, EnvItem[] env_items) {
-            if (Keyboard.is_down (Keyboard.Key.LEFT))position.x -= PLAYER_HORIZONTAL_SPEED * delta;
-            if (Keyboard.is_down (Keyboard.Key.RIGHT))position.x += PLAYER_HORIZONTAL_SPEED * delta;
+            if (Keyboard.is_down (Keyboard.Key.LEFT)) {
+                position.x -= PLAYER_HORIZONTAL_SPEED * delta;
+                velocity.x = -PLAYER_HORIZONTAL_SPEED;
+            } else if (Keyboard.is_down (Keyboard.Key.RIGHT)) {
+                position.x += PLAYER_HORIZONTAL_SPEED * delta;
+                velocity.x = PLAYER_HORIZONTAL_SPEED;
+            } else {
+                velocity.x = 0; // Stop horizontal movement if no key is pressed
+            }
+
             if (Keyboard.is_down (Keyboard.Key.SPACE) && can_jump) {
                 this.speed = -PLAYER_JUMP_SPEED;
                 this.can_jump = false;
@@ -46,7 +54,6 @@ namespace Valengine {
                 can_jump = true;
             }
         }
-
         public override void draw () {
             base.draw ();
             // Additional drawing code if needed
