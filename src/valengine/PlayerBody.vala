@@ -7,8 +7,5 @@ namespace Valengine {
         protected PlayerBody (float x, float y, float width, float height) {
             base (x, y, width, height, true);
         }
-
-        public virtual void update (float delta) {
-        }
     }
 }

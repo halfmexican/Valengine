@@ -1,5 +1,7 @@
 using GLib;
+using Valengine;
 using Valengine.Shapes;
+using Valengine.Graphics; // Import for Texture
 
 namespace Valengine {
     public class CharacterBody : GLib.Object {
@@ -11,30 +13,49 @@ namespace Valengine {
         public bool can_jump;
         public Rectangle collision_shape;
         public bool is_blocking;
+        public Texture ? sprite;
 
-        public CharacterBody (float x, float y, float width, float height, bool blocking) {
+        private Rectangle frameRec;
+        private int currentFrame = 0;
+        private int framesCounter = 0;
+        private int framesSpeed = 3; // Number of frames per second
+
+        protected CharacterBody (float x, float y, float width, float height, bool has_sprite = false) {
+            this.position = new Vector2 (x, y);
             this.width = width;
             this.height = height;
-            position = new Vector2 (x, y);
-            velocity = new Vector2 (0, 0);
-            speed = 0;
-            can_jump = false;
-            collision_shape = new Rectangle (x, y, width, height);
-            is_blocking = blocking;
+
+            // Assuming the sprite sheet is 128x32 with 4 frames (32x32 each)
+            this.frameRec = new Rectangle (0, 0, 32, 32);
+        }
+
+        public void load_sprite (string path) {
+            Image image = new Image (path);
+            sprite = new Texture.from_image (image);
         }
 
         public virtual void update (float delta) {
-            // Update position based on velocity
-            position.x += velocity.x * delta;
-            position.y += velocity.y * delta;
+            framesCounter++;
 
-            // Update collision shape position
-            collision_shape.x = position.x;
-            collision_shape.y = position.y;
+            if (framesCounter >= (60 / framesSpeed)) {
+                framesCounter = 0;
+                currentFrame++;
+
+                if (currentFrame > 3)currentFrame = 0;  // Assuming 4 frames in the sprite sheet
+
+                frameRec.x = (float) currentFrame * frameRec.width;
+            }
         }
 
         public virtual void draw () {
-            collision_shape.draw (is_blocking ? Color.GREEN : Color.RED, null, 0);
+            if (sprite != null) {
+                Rectangle destination = new Rectangle (position.x, position.y, frameRec.width, frameRec.height);
+                Vector2 origin = new Vector2 (frameRec.width / 2, frameRec.height);
+                float rotation = 0.0f;
+                Color tint = Color.WHITE;
+
+                sprite.draw_pro (frameRec, destination, origin, rotation, tint);
+            }
         }
     }
 }

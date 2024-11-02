@@ -12,8 +12,8 @@ public class Game : GLib.Application {
     // Constants
     private const int SCREEN_WIDTH = 800;
     private const int SCREEN_HEIGHT = 450;
-    private const float PLAYER_JUMP_SPD = 350.0f;
-    private const float PLAYER_HOR_SPD = 200.0f;
+    private const float PLAYER_JUMP_SPD = 150.0f;
+    private const float PLAYER_HOR_SPD = 100.0f;
 
     // Camera
     private 2DCamera camera;
@@ -43,6 +43,9 @@ public class Game : GLib.Application {
         }
 
         player = new PlatformerBody (400, 280);
+        string sprite_path = Path.build_filename (Environment.get_current_dir (), "src/valengine/images/");
+        player.load_sprite (sprite_path + "penguin.png");
+        
         env_items = {
             new EnvItem (0, 0, 1000, 400, false, Color.SKY_BLUE),
             new EnvItem (0, 400, 1000, 200, true, Color.GRAY),
@@ -71,8 +74,8 @@ public class Game : GLib.Application {
         }
 
         float delta_time = window.frame_time;
+        player.update (delta_time);
 
-        // update_player (delta_time);
         player.update_player (delta_time, env_items);
         camera.update_camera_combined (player, delta_time, SCREEN_WIDTH, SCREEN_HEIGHT, 40.0f, current_camera_mode);
 
@@ -100,10 +103,13 @@ public class Game : GLib.Application {
                 }
 
                 // Draw player
-                Rectangle player_rect = new Rectangle (player.position.x - 20, player.position.y - 40, 40, 40);
-                player_rect.draw (Color.RED, null, 0);
-                var center_rect = new Circle (player.position.x, player.position.y, 5.0f);
-                center_rect.draw (Color.GOLD);
+                //Rectangle player_rect = new Rectangle (player.position.x - 20, player.position.y - 40, 40, 40);
+                //player_rect.draw (Color.RED, null, 0);
+                player.draw ();
+                //var center_rect = new Circle (player.position.x, player.position.y, 5.0f);
+                //center_rect.draw (Color.GOLD);
+            
+                
             });
 
             draw_instructions ();

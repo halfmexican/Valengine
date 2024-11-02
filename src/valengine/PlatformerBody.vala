@@ -7,13 +7,12 @@ namespace Valengine {
         private const float PLAYER_JUMP_SPEED = 350.0f;
         private const float PLAYER_HORIZONTAL_SPEED = 200.0f;
         private const float GRAVITY = 400.0f;
-        public Sound? jump_sound;
+        public Sound ? jump_sound;
 
         public PlatformerBody (float x, float y) {
             base (x, y, 40, 40);
             string sound_path = Path.build_filename (Environment.get_current_dir (), "src/valengine/audio/");
             jump_sound = new Sound (sound_path + "jump.ogg");
-
         }
 
         public void update_player (float delta, EnvItem[] env_items) {
@@ -24,7 +23,7 @@ namespace Valengine {
                 this.can_jump = false;
                 jump_sound.playing = true;
             }
-    
+
             bool hit_obstacle = false;
             foreach (var ei in env_items) {
                 if (ei.blocking &&
@@ -38,7 +37,7 @@ namespace Valengine {
                     break;
                 }
             }
-    
+
             if (!hit_obstacle) {
                 position.y += speed * delta;
                 speed += GRAVITY * delta;
@@ -47,7 +46,6 @@ namespace Valengine {
                 can_jump = true;
             }
         }
-
 
         public override void draw () {
             base.draw ();
