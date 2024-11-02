@@ -4,9 +4,9 @@ using Valengine.Shapes;
 namespace Valengine {
     public class CharacterBody : GLib.Object {
         public float width;
-        public float height; 
-        public Vector2 position; 
-        public Vector2 velocity; 
+        public float height;
+        public Vector2 position;
+        public Vector2 velocity;
         public float speed;
         public bool can_jump;
         public Rectangle collision_shape;
