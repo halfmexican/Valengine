@@ -15,10 +15,11 @@ namespace Valengine {
         public bool is_blocking;
         public Texture ? sprite;
 
-        private Rectangle frame_rec;
-        private int current_frame = 0;
-        private int frames_counter = 0;
-        private int frames_speed = 3; // Number of frames per second
+        protected Rectangle frame_rec;
+        protected int current_frame = 0;
+        protected int frames_counter = 0;
+        protected int frames_speed = 3; // Number of frames per second
+        private bool facing_left = false;
 
         protected CharacterBody (float x, float y, float width, float height, bool has_sprite = false) {
             this.position = new Vector2 (x, y);
@@ -37,6 +38,8 @@ namespace Valengine {
 
         public virtual void update (float delta) {
             if (velocity.x != 0) { // Check if the player is moving horizontally
+                if (velocity.x < 0) facing_left = true;
+                else facing_left = false;
                 frames_counter++;
 
                 if (frames_counter >= (60 / frames_speed)) {
@@ -47,6 +50,7 @@ namespace Valengine {
 
                     frame_rec.x = (float) current_frame * frame_rec.width;
                 }
+                
             }
         }
 
@@ -57,8 +61,8 @@ namespace Valengine {
                 float rotation = 0.0f;
                 Color tint = Color.WHITE;
 
-                // Flip the sprite by setting a negative width in the source rectangle if moving left
-                float source_width = (velocity.x < 0) ? -frame_rec.width : frame_rec.width;
+                // Use the facing_left variable to determine the sprite's orientation
+                float source_width = facing_left ? -frame_rec.width : frame_rec.width;
                 Rectangle source = new Rectangle (frame_rec.x, frame_rec.y, source_width, frame_rec.height);
 
                 // Destination rectangle remains unchanged
