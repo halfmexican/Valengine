@@ -131,22 +131,28 @@ namespace Valengine {
             if (numOfWindows > 0) {
                 throw new WindowError.ONLY_ONE ("You can only have one Window at a time.");
             }
-
             warning ("The OOP interface is not done. Here be dragons!");
 
-            /* Make raylib use GLib's logging system */
+            // Make raylib use GLib's logging system
             Raylib.set_trace_log_callback (Log.trace_log);
-            /* Initialize the Window */
+
+            // Set the window resizable flag
+            Raylib.set_config_flags (Raylib.ConfigFlags.WINDOW_RESIZABLE);
+
+            // Initialize the Window
             this.windowTitle = title;
             Raylib.init_window (width, height, this.windowTitle);
             if (Raylib.is_window_ready () == false)
                 error ("Could not initialize window.");
             this.target_fps = targetFPS;
-            /* Initialize Default Font */
+
+            // Initialize Default Font
             Font.DEFAULT = new Font.default ();
-            /* Create Cursor Object */
+
+            // Create Cursor Object
             cursor = new Cursor ();
-            /* Create Monitor Array */
+
+            // Create Monitor Array
             monitors.resize (monitors.length + 1);
             monitors[0] = new Monitor (0);
             for (int i = 1; i < Raylib.get_monitor_count (); i++) {
@@ -155,7 +161,6 @@ namespace Valengine {
             }
             numOfWindows++;
         }
-
         /* Destroyer */
         ~Window () {
             debug ("Destroying Window...");
