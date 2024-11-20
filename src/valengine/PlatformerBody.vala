@@ -4,10 +4,11 @@ using Valengine.Input;
 using Valengine.Audio;
 namespace Valengine {
     public class PlatformerBody : PlayerBody {
-        private const float PLAYER_JUMP_SPEED = 350.0f;
+        private const float PLAYER_JUMP_SPEED = 300.0f;
         private const float PLAYER_HORIZONTAL_SPEED = 200.0f;
         private const float GRAVITY = 400.0f;
         public Sound ? jump_sound;
+        public Gamepad ? gamepad;
 
         public PlatformerBody (float x, float y) {
             base (x, y, 40, 40);
@@ -15,21 +16,33 @@ namespace Valengine {
             jump_sound = new Sound (sound_path + "jump.ogg");
         }
 
+        public PlatformerBody.for_gamepad (float x, float y, Gamepad gamepad) {
+            base (x, y, 40, 40);
+            string sound_path = Path.build_filename (Environment.get_current_dir (), "src/valengine/audio/");
+            jump_sound = new Sound (sound_path + "jump.ogg");
+            this.gamepad = gamepad;
+        }
+
         public void update_player (float delta, EnvItem[] env_items) {
-            if (Keyboard.is_down (Keyboard.Key.LEFT)) {
+            // Horizontal movement
+            if (Keyboard.is_down (Keyboard.Key.LEFT) ||
+                (gamepad != null && gamepad.is_button_down (Raylib.GamepadButton.LEFT_FACE_LEFT))) {
                 position.x -= PLAYER_HORIZONTAL_SPEED * delta;
                 velocity.x = -PLAYER_HORIZONTAL_SPEED;
-            } else if (Keyboard.is_down (Keyboard.Key.RIGHT)) {
+            } else if (Keyboard.is_down (Keyboard.Key.RIGHT) ||
+                       (gamepad != null && gamepad.is_button_down (Raylib.GamepadButton.LEFT_FACE_RIGHT))) {
                 position.x += PLAYER_HORIZONTAL_SPEED * delta;
                 velocity.x = PLAYER_HORIZONTAL_SPEED;
             } else {
-                velocity.x = 0; // Stop horizontal movement if no key is pressed
+                velocity.x = 0; // Stop horizontal movement if no key or button is pressed
             }
 
-            if (Keyboard.is_down (Keyboard.Key.SPACE) && can_jump) {
+            // Jumping
+            if ((Keyboard.is_down (Keyboard.Key.SPACE) ||
+                (gamepad != null && gamepad.is_button_down (Raylib.GamepadButton.RIGHT_FACE_DOWN))) && can_jump) {
                 this.speed = -PLAYER_JUMP_SPEED;
                 this.can_jump = false;
-                jump_sound.playing = true;
+                if (jump_sound != null) jump_sound.playing = true;
             }
 
             bool hit_obstacle = false;
