@@ -13,60 +13,30 @@ namespace Valengine {
         public bool can_jump;
         public Rectangle collision_shape;
         public bool is_blocking;
-        public Texture ? sprite;
+        private SpriteSheet ? sprite_sheet;
 
-        private Rectangle frame_rec;
-        private int current_frame = 0;
-        private int frames_counter = 0;
-        private int frames_speed = 3; // Number of frames per second
+        private bool facing_left = false;
 
         protected CharacterBody (float x, float y, float width, float height, bool has_sprite = false) {
             this.position = new Vector2 (x, y);
-            this.velocity = new Vector2 (0, 0); // Ensure velocity is initialized
+            this.velocity = new Vector2 (0, 0);
             this.width = width;
             this.height = height;
-
-            // Assuming the sprite sheet is 128x32 with 4 frames (32x32 each)
-            this.frame_rec = new Rectangle (0, 0, 32, 32);
         }
 
-        public void load_sprite (string path) {
-            Image image = new Image (path);
-            sprite = new Texture.from_image (image);
+        public void load_sprite (string path, int frame_width, int frame_height, int frame_count) {
+            sprite_sheet = new SpriteSheet (path, frame_width, frame_height, frame_count);
         }
 
         public virtual void update (float delta) {
-            if (velocity.x != 0) { // Check if the player is moving horizontally
-                frames_counter++;
-
-                if (frames_counter >= (60 / frames_speed)) {
-                    frames_counter = 0;
-                    current_frame++;
-
-                    if (current_frame > 3)current_frame = 0;   // Assuming 4 frames in the sprite sheet
-
-                    frame_rec.x = (float) current_frame * frame_rec.width;
-                }
+            if (velocity.x != 0) {
+                facing_left = velocity.x < 0;
+                sprite_sheet ?.update ();
             }
         }
 
         public virtual void draw () {
-            if (sprite != null) {
-                // Determine the origin for rotation and scaling
-                Vector2 origin = new Vector2 (frame_rec.width / 2, frame_rec.height);
-                float rotation = 0.0f;
-                Color tint = Color.WHITE;
-
-                // Flip the sprite by setting a negative width in the source rectangle if moving left
-                float source_width = (velocity.x < 0) ? -frame_rec.width : frame_rec.width;
-                Rectangle source = new Rectangle (frame_rec.x, frame_rec.y, source_width, frame_rec.height);
-
-                // Destination rectangle remains unchanged
-                Rectangle destination = new Rectangle (position.x, position.y, frame_rec.width, frame_rec.height);
-
-                // Draw the sprite with the adjusted source rectangle
-                sprite.draw_pro (source, destination, origin, rotation, tint);
-            }
+            sprite_sheet ?.draw (position, facing_left);
         }
     }
 }

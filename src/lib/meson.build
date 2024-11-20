@@ -21,4 +21,5 @@ lib_src = [
 	#### Valengine ####
 	'src/lib/Graphics/Texture2D.vala',
 	'src/lib/Graphics/Image.vala',
+	'src/lib/Graphics/SpriteSheet.vala',
 ]

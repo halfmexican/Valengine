@@ -44,8 +44,8 @@ public class Game : GLib.Application {
 
         player = new PlatformerBody (400, 280);
         string sprite_path = Path.build_filename (Environment.get_current_dir (), "src/valengine/images/");
-        player.load_sprite (sprite_path + "penguin.png");
-        
+        player.load_sprite (sprite_path + "penguin.png", 32, 32, 4);
+
         env_items = {
             new EnvItem (0, 0, 1000, 400, false, Color.SKY_BLUE),
             new EnvItem (0, 400, 1000, 200, true, Color.GRAY),
@@ -102,14 +102,8 @@ public class Game : GLib.Application {
                     ei.rect.draw (ei.color, null, 0);
                 }
 
-                // Draw player
-                //Rectangle player_rect = new Rectangle (player.position.x - 20, player.position.y - 40, 40, 40);
-                //player_rect.draw (Color.RED, null, 0);
                 player.draw ();
-                //var center_rect = new Circle (player.position.x, player.position.y, 5.0f);
-                //center_rect.draw (Color.GOLD);
-            
-                
+
             });
 
             draw_instructions ();
