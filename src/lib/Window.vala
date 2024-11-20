@@ -137,6 +137,7 @@ namespace Valengine {
             Raylib.set_trace_log_callback (Log.trace_log);
 
             // Set the window resizable flag
+            // TODO: Make this take in an array of flags
             Raylib.set_config_flags (Raylib.ConfigFlags.WINDOW_RESIZABLE);
 
             // Initialize the Window
