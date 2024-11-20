@@ -7,6 +7,7 @@ namespace Valengine {
         private const float PLAYER_JUMP_SPEED = 300.0f;
         private const float PLAYER_HORIZONTAL_SPEED = 200.0f;
         private const float GRAVITY = 400.0f;
+        private const float PLAYER_SCALE = 2.0f; 
         public Sound ? jump_sound;
         public Gamepad ? gamepad;
 
@@ -39,10 +40,10 @@ namespace Valengine {
 
             // Jumping
             if ((Keyboard.is_down (Keyboard.Key.SPACE) ||
-                (gamepad != null && gamepad.is_button_down (Raylib.GamepadButton.RIGHT_FACE_DOWN))) && can_jump) {
+                 (gamepad != null && gamepad.is_button_down (Raylib.GamepadButton.RIGHT_FACE_DOWN))) && can_jump) {
                 this.speed = -PLAYER_JUMP_SPEED;
                 this.can_jump = false;
-                if (jump_sound != null) jump_sound.playing = true;
+                if (jump_sound != null)jump_sound.playing = true;
             }
 
             bool hit_obstacle = false;
@@ -67,9 +68,11 @@ namespace Valengine {
                 can_jump = true;
             }
         }
+
         public override void draw () {
-            base.draw ();
-            // Additional drawing code if needed
+            sprite_sheet ?.draw (position, facing_left, PLAYER_SCALE);
         }
+
+       
     }
 }
