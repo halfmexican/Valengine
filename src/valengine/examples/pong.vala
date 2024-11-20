@@ -121,14 +121,14 @@ namespace Valengine {
             // Use the Gamepad object if available
             if (gamepad != null && gamepad.still_around ()) {
                 // Use left analog stick for left paddle
-                float left_stick_y = gamepad.get_axis_movement (Raylib.GamepadAxis.LEFT_Y);
+                float left_stick_y = gamepad.get_axis_movement (Gamepad.Axis.LEFT_Y);
                 if (Math.fabsf (left_stick_y) > 0.1) { // Add a deadzone threshold
                     paddle_left.y += left_stick_y * PADDLE_SPEED * delta;
                     paddle_left.y = clamp (paddle_left.y, 0, SCREEN_HEIGHT - paddle_left.height);
                 }
 
                 // Use right analog stick for right paddle
-                float right_stick_y = gamepad.get_axis_movement (Raylib.GamepadAxis.RIGHT_Y);
+                float right_stick_y = gamepad.get_axis_movement (Gamepad.Axis.RIGHT_Y);
                 if (Math.fabsf (right_stick_y) > 0.1) { // Add a deadzone threshold
                     paddle_right.y += right_stick_y * PADDLE_SPEED * delta;
                     paddle_right.y = clamp (paddle_right.y, 0, SCREEN_HEIGHT - paddle_right.height);
