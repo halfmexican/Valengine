@@ -12,13 +12,13 @@ namespace Valengine {
         public Gamepad ? gamepad;
 
         public PlatformerBody (float x, float y) {
-            base (x, y, 40, 40);
+            base (x, y, 64, 64);
             string sound_path = Path.build_filename (Environment.get_current_dir (), "src/valengine/audio/");
             jump_sound = new Sound (sound_path + "jump.ogg");
         }
 
         public PlatformerBody.for_gamepad (float x, float y, Gamepad gamepad) {
-            base (x, y, 40, 40);
+            base (x, y, 64, 64);
             string sound_path = Path.build_filename (Environment.get_current_dir (), "src/valengine/audio/");
             jump_sound = new Sound (sound_path + "jump.ogg");
             this.gamepad = gamepad;

@@ -131,6 +131,7 @@ public class Game : GLib.Application {
     }
 
     void update_camera_projection () {
+        // TODO: Only update on window resize??
         // Update the camera's offset to center it based on the new window size
         camera.offset = new Vector2 (window.width / 2, window.height / 2);
 
