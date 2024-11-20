@@ -26,11 +26,14 @@ namespace Valengine {
         private int score_right = 0;
 
         // Audio
-        private Sound? ping;
-        private Sound? pong;
+        private Sound ? ping;
+        private Sound ? pong;
+
+        // Input
+        private Gamepad ? gamepad;
 
         private PongGame () {
-            Object (application_id: "io.github.valengine.pong", flags: ApplicationFlags.FLAGS_NONE);
+            Object (application_id : "io.github.valengine.pong", flags : ApplicationFlags.FLAGS_NONE);
         }
 
         // First method called when the application is started
@@ -98,9 +101,13 @@ namespace Valengine {
                 return false;
             }
 
+            if (gamepad == null && Raylib.is_gamepad_available (0)) {
+                gamepad = new Gamepad (0);
+            }
+
             float delta = window.frame_time;
 
-            // Update paddles
+            // Update paddles using keyboard input
             if (Keyboard.is_down (Keyboard.Key.W) && paddle_left.y > 0)
                 paddle_left.y -= PADDLE_SPEED * delta;
             if (Keyboard.is_down (Keyboard.Key.S) && paddle_left.y < SCREEN_HEIGHT - paddle_left.height)
@@ -111,7 +118,24 @@ namespace Valengine {
             if (Keyboard.is_down (Keyboard.Key.DOWN) && paddle_right.y < SCREEN_HEIGHT - paddle_right.height)
                 paddle_right.y += PADDLE_SPEED * delta;
 
-            // Update ball
+            // Use the Gamepad object if available
+            if (gamepad != null && gamepad.still_around ()) {
+                // Use left analog stick for left paddle
+                float left_stick_y = gamepad.get_axis_movement (Raylib.GamepadAxis.LEFT_Y);
+                if (Math.fabsf (left_stick_y) > 0.1) { // Add a deadzone threshold
+                    paddle_left.y += left_stick_y * PADDLE_SPEED * delta;
+                    paddle_left.y = clamp (paddle_left.y, 0, SCREEN_HEIGHT - paddle_left.height);
+                }
+
+                // Use right analog stick for right paddle
+                float right_stick_y = gamepad.get_axis_movement (Raylib.GamepadAxis.RIGHT_Y);
+                if (Math.fabsf (right_stick_y) > 0.1) { // Add a deadzone threshold
+                    paddle_right.y += right_stick_y * PADDLE_SPEED * delta;
+                    paddle_right.y = clamp (paddle_right.y, 0, SCREEN_HEIGHT - paddle_right.height);
+                }
+            }
+
+            // Update ball and other game logic...
             ball.x += ball_velocity.x * delta;
             ball.y += ball_velocity.y * delta;
 
