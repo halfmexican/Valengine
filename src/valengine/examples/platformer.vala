@@ -41,8 +41,18 @@ public class Game : GLib.Application {
         } catch (WindowError e) {
             error (e.message);
         }
+        try {
+            if (Raylib.is_gamepad_available (0)) {
+                Gamepad gamepad = new Gamepad (0);
+                player = new PlatformerBody.for_gamepad (400, 280, gamepad);
+            } else {
+                warning ("Gamepad 0 is not available.");
+                player = new PlatformerBody (400, 280);
+            }
+        } catch (Error e) {
+            error (e.message);
+        }
 
-        player = new PlatformerBody (400, 280);
         string sprite_path = Path.build_filename (Environment.get_current_dir (), "src/valengine/images/");
         player.load_sprite (sprite_path + "penguin.png", 32, 32, 4);
 
@@ -55,7 +65,6 @@ public class Game : GLib.Application {
         };
 
         camera = new 2DCamera.from_character_body (player, 0.0f, 1.0f);
-
         window.target_fps = 60;
 
         loop = new MainLoop ();
@@ -71,6 +80,10 @@ public class Game : GLib.Application {
         if (window.should_close) {
             loop.quit ();
             return false;
+        }
+
+        if (player.gamepad == null && Raylib.is_gamepad_available (0)) {
+            player.gamepad = new Gamepad (0);
         }
 
         float delta_time = window.frame_time;
@@ -103,7 +116,6 @@ public class Game : GLib.Application {
                 }
 
                 player.draw ();
-
             });
 
             draw_instructions ();
