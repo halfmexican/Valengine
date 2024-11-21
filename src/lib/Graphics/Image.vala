@@ -2,17 +2,17 @@ namespace Valengine {
     using Raylib;
     namespace Graphics {
         public class Image : GLib.Object {
-            /* Variables */
+            // Variables 
             internal Raylib.Image iImage;
-            private bool isLoaded = false;
+            private bool is_loaded = false;
 
-            /* Constructors */
+            // Constructors
             /**
              * Load image from a file.
              */
             public Image (string file) {
                 this.iImage = Raylib.load_image (file);
-                isLoaded = true;
+                is_loaded = true;
             }
 
             /**
@@ -20,7 +20,7 @@ namespace Valengine {
              */
             public Image.from_raw (string file, int width, int height, int format, int header_size) {
                 this.iImage = Raylib.load_image_raw (file, width, height, format, header_size);
-                isLoaded = true;
+                is_loaded = true;
             }
 
             /**
@@ -28,17 +28,17 @@ namespace Valengine {
              */
             public Image.from_memory (string filename, uchar[] file_data) {
                 this.iImage = Raylib.load_image_from_memory (filename, file_data);
-                isLoaded = true;
+                is_loaded = true;
             }
 
-            /* Destroyer */
+            // Destroyer 
             ~Image () {
-                if (isLoaded) {
+                if (is_loaded) {
                     Raylib.unload_image (this.iImage);
                 }
             }
 
-            /* Methods */
+            // Methods 
             /**
              * Export image to a file.
              */
@@ -53,7 +53,7 @@ namespace Valengine {
                 Raylib.image_mipmaps (this.iImage);
             }
 
-            /* Properties */
+            // Properties 
             /**
              * Width of the image.
              */
