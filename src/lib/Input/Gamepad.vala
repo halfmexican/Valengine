@@ -2,7 +2,7 @@ namespace Valengine {
     namespace Input {
         public class Gamepad : GLib.Object {
 
-            /* Enums */
+            // Enums 
             public enum Axis {
                 LEFT_X = Raylib.GamepadAxis.LEFT_X,
                 LEFT_Y = Raylib.GamepadAxis.LEFT_Y,
@@ -33,10 +33,11 @@ namespace Valengine {
                 RIGHT_THUMB = Raylib.GamepadButton.RIGHT_THUMB
             }
 
-            /* Variables */
-            internal int padID;
-            internal string padName;
-            /* Constructor */
+            // Variables 
+            internal int pad_ID;
+            internal string pad_name;
+
+            // Constructor 
             public Gamepad (int gamepad) throws GLib.Error {
                 if (Raylib.is_gamepad_available (gamepad) == false) {
                     throw new GLib.Error (
@@ -44,17 +45,17 @@ namespace Valengine {
                               1,
                               @"The gamepad specified, $(gamepad), is not available.");
                 }
-                this.padID = gamepad;
-                this.padName = this.name;
+                this.pad_ID = gamepad;
+                this.pad_name = this.name;
                 return;
             }
 
-            /* Methods */
+            // Methods 
             /**
              * Checks if the gamepad is still available.
              */
             public bool still_around () {
-                return (Raylib.is_gamepad_available (this.padID));
+                return (Raylib.is_gamepad_available (this.pad_ID));
             }
 
             /**
@@ -65,10 +66,10 @@ namespace Valengine {
                     throw new GLib.Error (
                               GLib.Quark.from_string ("Gamepad"),
                               1,
-                              @"The gamepad specified, $(this.padID):$(this.padName), is no longer available."
+                              @"The gamepad specified, $(this.pad_ID):$(this.pad_name), is no longer available."
                     );
                 }
-                return (Raylib.is_gamepad_button_pressed (this.padID, (Raylib.GamepadButton)button));
+                return (Raylib.is_gamepad_button_pressed (this.pad_ID, (Raylib.GamepadButton)button));
             }
 
             /**
@@ -79,10 +80,10 @@ namespace Valengine {
                     throw new GLib.Error (
                               GLib.Quark.from_string ("Gamepad"),
                               1,
-                              @"The gamepad specified, $(this.padID):$(this.padName), is no longer available."
+                              @"The gamepad specified, $(this.pad_ID):$(this.pad_name), is no longer available."
                     );
                 }
-                return (Raylib.is_gamepad_button_down (this.padID, (Raylib.GamepadButton)button));
+                return (Raylib.is_gamepad_button_down (this.pad_ID, (Raylib.GamepadButton)button));
             }
 
             /**
@@ -93,10 +94,10 @@ namespace Valengine {
                     throw new GLib.Error (
                               GLib.Quark.from_string ("Gamepad"),
                               1,
-                              @"The gamepad specified, $(this.padID):$(this.padName), is no longer available."
+                              @"The gamepad specified, $(this.pad_ID):$(this.pad_name), is no longer available."
                     );
                 }
-                return (Raylib.is_gamepad_button_released (this.padID,(Raylib.GamepadButton) button));
+                return (Raylib.is_gamepad_button_released (this.pad_ID,(Raylib.GamepadButton) button));
             }
 
             /**
@@ -107,10 +108,10 @@ namespace Valengine {
                     throw new GLib.Error (
                               GLib.Quark.from_string ("Gamepad"),
                               1,
-                              @"The gamepad specified, $(this.padID):$(this.padName), is no longer available."
+                              @"The gamepad specified, $(this.pad_ID):$(this.pad_name), is no longer available."
                     );
                 }
-                return (Raylib.is_gamepad_button_up (this.padID, (Raylib.GamepadButton)button));
+                return (Raylib.is_gamepad_button_up (this.pad_ID, (Raylib.GamepadButton)button));
             }
 
             /**
@@ -121,10 +122,10 @@ namespace Valengine {
                     throw new GLib.Error (
                               GLib.Quark.from_string ("Gamepad"),
                               1,
-                              @"The gamepad specified, $(this.padID):$(this.padName), is no longer available."
+                              @"The gamepad specified, $(this.pad_ID):$(this.pad_name), is no longer available."
                     );
                 }
-                return (Raylib.get_gamepad_axis_movement (this.padID, (Raylib.GamepadAxis) axis));
+                return (Raylib.get_gamepad_axis_movement (this.pad_ID, (Raylib.GamepadAxis) axis));
             }
 
             /**
@@ -135,21 +136,21 @@ namespace Valengine {
                     throw new GLib.Error (
                               GLib.Quark.from_string ("Gamepad"),
                               1,
-                              @"The gamepad specified, $(this.padID):$(this.padName), is no longer available."
+                              @"The gamepad specified, $(this.pad_ID):$(this.pad_name), is no longer available."
                     );
                 }
                 return (Raylib.set_gamepad_mappings (mappings));
             }
 
-            /* Properties */
+            // Properties 
             /**
              * Get internal name id.
              */
             public string name {
                 owned get {
                     /* Update pad name */
-                    var name = Raylib.get_gamepad_name (this.padID);
-                    this.padName = name;
+                    var name = Raylib.get_gamepad_name (this.pad_ID);
+                    this.pad_name = name;
                     return (name);
                 }
             }
@@ -166,7 +167,7 @@ namespace Valengine {
              */
             public int axis_count {
                 get {
-                    return (Raylib.get_gamepad_axis_count (this.padID));
+                    return (Raylib.get_gamepad_axis_count (this.pad_ID));
                 }
             }
         }
