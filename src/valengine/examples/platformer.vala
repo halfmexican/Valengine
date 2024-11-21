@@ -41,21 +41,19 @@ public class Game : GLib.Application {
         } catch (WindowError e) {
             error (e.message);
         }
-
         player = new PlatformerBody (400, 280);
         string sprite_path = Path.build_filename (Environment.get_current_dir (), "src/valengine/images/");
         player.load_sprite (sprite_path + "penguin.png", 32, 32, 4);
 
         env_items = {
             new EnvItem (0, 0, 1000, 400, false, Color.SKY_BLUE),
-            new EnvItem (0, 400, 1000, 200, true, Color.GRAY),
+            new EnvItem (-5000, 400, 10000, 200, true, Color.GRAY),
             new EnvItem (300, 200, 400, 10, true, Color.GRAY),
             new EnvItem (250, 300, 100, 10, true, Color.GRAY),
             new EnvItem (650, 300, 100, 10, true, Color.GRAY)
         };
 
         camera = new 2DCamera.from_character_body (player, 0.0f, 1.0f);
-
         window.target_fps = 60;
 
         loop = new MainLoop ();
@@ -73,11 +71,16 @@ public class Game : GLib.Application {
             return false;
         }
 
+        if (player.gamepad == null && Raylib.is_gamepad_available (0)) {
+            player.gamepad = new Gamepad (0);
+        }
+
         float delta_time = window.frame_time;
         player.update (delta_time);
 
         player.update_player (delta_time, env_items);
         camera.update_camera_combined (player, delta_time, SCREEN_WIDTH, SCREEN_HEIGHT, 40.0f, current_camera_mode);
+        update_camera_projection ();
 
         if (Keyboard.is_pressed (Keyboard.Key.C)) {
             current_camera_mode = (CameraMode) (((int) current_camera_mode + 1) % camera_modes.length);
@@ -103,7 +106,6 @@ public class Game : GLib.Application {
                 }
 
                 player.draw ();
-
             });
 
             draw_instructions ();
@@ -126,5 +128,17 @@ public class Game : GLib.Application {
     public static int main (string[] args) {
         var app = new Game ();
         return app.run (args);
+    }
+
+    void update_camera_projection () {
+        // TODO: Only update on window resize??
+        // Update the camera's offset to center it based on the new window size
+        camera.offset = new Vector2 (window.width / 2, window.height / 2);
+
+        // Calculate the zoom level based on the window size
+        float width_ratio = (float) window.width / SCREEN_WIDTH;
+        float height_ratio = (float) window.height / SCREEN_WIDTH;
+        camera.zoom = (float) Math.fmin (width_ratio, height_ratio);
+
     }
 }

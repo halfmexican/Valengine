@@ -13,9 +13,8 @@ namespace Valengine {
         public bool can_jump;
         public Rectangle collision_shape;
         public bool is_blocking;
-        private SpriteSheet ? sprite_sheet;
-
-        private bool facing_left = false;
+        protected SpriteSheet ? sprite_sheet;
+        protected bool facing_left = false;
 
         protected CharacterBody (float x, float y, float width, float height, bool has_sprite = false) {
             this.position = new Vector2 (x, y);
@@ -36,7 +35,7 @@ namespace Valengine {
         }
 
         public virtual void draw () {
-            sprite_sheet ?.draw (position, facing_left);
+            sprite_sheet ?.draw (position, facing_left, 1.0f);
         }
     }
 }
