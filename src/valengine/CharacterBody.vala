@@ -5,16 +5,16 @@ using Valengine.Graphics; // Import for Texture
 
 namespace Valengine {
     public class CharacterBody : GLib.Object {
-        public Vector2 position;
-        public Vector2 velocity;
-        public float width;
-        public float height;
-        public float speed;
-        public bool can_jump;
-        public Rectangle collision_shape;
+        protected float width;
+        protected float height;
+        protected Rectangle collision_shape;
         public bool is_blocking;
         protected SpriteSheet ? sprite_sheet;
-        protected bool facing_left = false;
+        public Vector2 position; 
+        public Vector2 velocity;
+        public float speed;
+        public bool can_jump;
+        public bool facing_left = false;
 
         protected CharacterBody (float x, float y, float width, float height, bool has_sprite = false) {
             this.position = new Vector2 (x, y);
