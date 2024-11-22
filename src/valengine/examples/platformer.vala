@@ -2,6 +2,7 @@ using GLib;
 using Valengine;
 using Valengine.Shapes;
 using Valengine.Input;
+using Valengine.Audio;
 
 public class Game : GLib.Application {
     // Window
@@ -41,30 +42,46 @@ public class Game : GLib.Application {
         } catch (WindowError e) {
             error (e.message);
         }
+
         player = new PlatformerBody (400, 280);
         string sprite_path = null;
+        string sound_path = null;
 
         // Iterate through standard system data directories
         foreach (string data_dir in Environment.get_system_data_dirs ()) {
-            string potential_path = Path.build_filename (data_dir, "valengine", "images");
-            if (FileUtils.test (potential_path, FileTest.IS_DIR)) {
-                sprite_path = potential_path;
-                break;
+            string potential_sprite_path = Path.build_filename (data_dir, "valengine", "images");
+            string potential_sound_path = Path.build_filename (data_dir, "valengine", "audio");
+            if (FileUtils.test (potential_sprite_path, FileTest.IS_DIR)) {
+                sprite_path = potential_sprite_path;
             }
+            if (FileUtils.test (potential_sound_path, FileTest.IS_DIR)) {
+                sound_path = potential_sound_path;
+            }
+            if (sprite_path != null && sound_path != null)break;
         }
 
-        // Handle missing path
+        // Handle missing sprite path
         if (sprite_path == null) {
             warning ("Error: Unable to locate installed images directory.\n");
             message ("trying development images directory...\n");
-            sprite_path = Path.build_filename(Environment.get_current_dir(), "src/valengine/images/");
+            sprite_path = Path.build_filename (Environment.get_current_dir (), "src/valengine/images/");
             return;
         }
 
-        // Print the resolved path (optional debugging)
+        // Handle missing sound path
+        if (sound_path == null) {
+            warning ("Error: Unable to locate installed sounds directory.\n");
+            message ("trying development sounds directory...\n");
+            sound_path = Path.build_filename (Environment.get_current_dir (), "src/valengine/audio/");
+        }
+
+        // Print the resolved paths (optional debugging)
         message ("Images directory found at: %s\n", sprite_path);
+        message ("Sounds directory found at: %s\n", sound_path);
 
         player.load_sprite (sprite_path + "/penguin.png", 32, 32, 4);
+        Sound jump_sound = new Sound (sound_path + "/jump.ogg");
+        player.set_jump_sound (jump_sound);
 
         env_items = {
             new EnvItem (0, 0, 1000, 400, false, Color.SKY_BLUE),

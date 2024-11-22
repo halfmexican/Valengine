@@ -7,22 +7,19 @@ namespace Valengine {
         private const float PLAYER_JUMP_SPEED = 300.0f;
         private const float PLAYER_HORIZONTAL_SPEED = 200.0f;
         private const float GRAVITY = 400.0f;
-        private const float PLAYER_SCALE = 2.0f; 
-        public Sound ? jump_sound;
+        private const float PLAYER_SCALE = 2.0f;
+        protected Sound ? jump_sound;
         public Gamepad ? gamepad;
 
         public PlatformerBody (float x, float y) {
             base (x, y, 64, 64);
-            string sound_path = Path.build_filename (Environment.get_current_dir (), "src/valengine/audio/");
-            jump_sound = new Sound (sound_path + "jump.ogg");
         }
 
         public PlatformerBody.for_gamepad (float x, float y, Gamepad gamepad) {
             base (x, y, 64, 64);
-            string sound_path = Path.build_filename (Environment.get_current_dir (), "src/valengine/audio/");
-            jump_sound = new Sound (sound_path + "jump.ogg");
             this.gamepad = gamepad;
         }
+
 
         public void update_player (float delta, EnvItem[] env_items) {
             // Horizontal movement
@@ -69,10 +66,12 @@ namespace Valengine {
             }
         }
 
+        public void set_jump_sound (Sound sound) {
+            this.jump_sound = sound;
+        }
+
         public override void draw () {
             sprite_sheet ?.draw (position, facing_left, PLAYER_SCALE);
         }
-
-       
     }
 }
