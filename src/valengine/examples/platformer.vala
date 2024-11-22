@@ -42,8 +42,29 @@ public class Game : GLib.Application {
             error (e.message);
         }
         player = new PlatformerBody (400, 280);
-        string sprite_path = Path.build_filename (Environment.get_current_dir (), "src/valengine/images/");
-        player.load_sprite (sprite_path + "penguin.png", 32, 32, 4);
+        string sprite_path = null;
+
+        // Iterate through standard system data directories
+        foreach (string data_dir in Environment.get_system_data_dirs ()) {
+            string potential_path = Path.build_filename (data_dir, "valengine", "images");
+            if (FileUtils.test (potential_path, FileTest.IS_DIR)) {
+                sprite_path = potential_path;
+                break;
+            }
+        }
+
+        // Handle missing path
+        if (sprite_path == null) {
+            warning ("Error: Unable to locate installed images directory.\n");
+            message ("trying development images directory...\n");
+            sprite_path = Path.build_filename(Environment.get_current_dir(), "src/valengine/images/");
+            return;
+        }
+
+        // Print the resolved path (optional debugging)
+        message ("Images directory found at: %s\n", sprite_path);
+
+        player.load_sprite (sprite_path + "/penguin.png", 32, 32, 4);
 
         env_items = {
             new EnvItem (0, 0, 1000, 400, false, Color.SKY_BLUE),
@@ -139,6 +160,5 @@ public class Game : GLib.Application {
         float width_ratio = (float) window.width / SCREEN_WIDTH;
         float height_ratio = (float) window.height / SCREEN_WIDTH;
         camera.zoom = (float) Math.fmin (width_ratio, height_ratio);
-
     }
 }

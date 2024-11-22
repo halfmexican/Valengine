@@ -9,9 +9,25 @@ pkg = import('pkgconfig')
 # Variables
 source_dir = meson.current_source_dir()
 vapi_dir = source_dir / 'vapi'
-audio_source_dir = source_dir / 'src/valengine/audio'
-image_source_dir = source_dir / 'src/valengine/images'
+val_source_dir = source_dir / 'src/valengine/'
 version = meson.project_version()
+
+
+
+image_source_dir = val_source_dir / 'images'
+audio_source_dir = val_source_dir / 'audio'
+# Install images
+install_subdir(
+  image_source_dir,
+  install_dir: get_option('datadir') / 'valengine'
+)
+
+
+# Install sounds
+install_subdir(
+  audio_source_dir,
+  install_dir: get_option('datadir') / 'valengine'
+)
 
 
 # Compilers
