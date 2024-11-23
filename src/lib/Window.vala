@@ -138,8 +138,6 @@ namespace Valengine {
 
             // Set the window resizable flag
             // TODO: Make this take in an array of flags
-            Raylib.set_config_flags (Raylib.ConfigFlags.WINDOW_RESIZABLE);
-
             // Initialize the Window
             this.windowTitle = title;
             Raylib.init_window (width, height, this.windowTitle);
@@ -162,6 +160,14 @@ namespace Valengine {
             }
             numOfWindows++;
         }
+
+        public Window.with_flags (int width, int height, string title, Raylib.ConfigFlags[] flags) {
+            foreach (Raylib.ConfigFlags flag in flags) {
+                Raylib.set_config_flags (flag);
+            }
+            this (width, height, title);
+        }
+
         /* Destroyer */
         ~Window () {
             debug ("Destroying Window...");

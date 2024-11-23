@@ -15,6 +15,9 @@ public class Game : GLib.Application {
     private const int SCREEN_HEIGHT = 450;
     private const float PLAYER_JUMP_SPD = 150.0f;
     private const float PLAYER_HOR_SPD = 100.0f;
+    private const Raylib.ConfigFlags[] window_flags = {
+        Raylib.ConfigFlags.WINDOW_RESIZABLE
+    };
 
     // Camera
     private 2DCamera camera;
@@ -41,7 +44,7 @@ public class Game : GLib.Application {
     // First method called when the application is started
     public override void activate () {
         try {
-            window = new Window (SCREEN_WIDTH, SCREEN_HEIGHT, "Valengine - 2DCamera/Platformer");
+            window = new Window.with_flags (SCREEN_WIDTH, SCREEN_HEIGHT, "Valengine - 2DCamera/Platformer", window_flags);
         } catch (WindowError e) {
             error (e.message);
         }
