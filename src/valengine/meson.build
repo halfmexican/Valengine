@@ -1,6 +1,5 @@
 valengine_sources = [	
 	'src/valengine/CameraModeEnum.vala',
-	'src/valengine/MovementTypeEnum.vala',
 	'src/valengine/CharacterBody.vala',
 	'src/valengine/PlayerBody.vala',
 	'src/valengine/PlatformerBody.vala',

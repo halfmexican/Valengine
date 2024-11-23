@@ -41,7 +41,7 @@ public class Game : GLib.Application {
     // First method called when the application is started
     public override void activate () {
         try {
-            window = new Window (SCREEN_WIDTH, SCREEN_HEIGHT, "raylib [core] example - 2d camera");
+            window = new Window (SCREEN_WIDTH, SCREEN_HEIGHT, "Valengine - 2DCamera/Platformer");
         } catch (WindowError e) {
             error (e.message);
         }
@@ -109,6 +109,7 @@ public class Game : GLib.Application {
         camera.update_camera_combined (player, delta_time, SCREEN_WIDTH, SCREEN_HEIGHT, 40.0f, current_camera_mode);
         update_camera_projection ();
 
+        // Add Gamepad here
         if (Keyboard.is_pressed (Keyboard.Key.C)) {
             current_camera_mode = (CameraMode) (((int) current_camera_mode + 1) % camera_modes.length);
         }
