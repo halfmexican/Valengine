@@ -182,3 +182,4 @@ public class Game : GLib.Application {
         return app.run (args);
     }
 }
+
