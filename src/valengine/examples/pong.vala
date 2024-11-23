@@ -107,33 +107,37 @@ namespace Valengine {
 
             float delta = window.frame_time;
 
-            // Update paddles using keyboard input
-            if (Keyboard.is_down (Keyboard.Key.W) && paddle_left.y > 0)
+            // Initialize ControlMapping
+            ControlMapping controls = new ControlMapping();
+
+            // Update paddles using ControlMapping
+            if (controls.is_action_down(PlayerAction.MOVE_UP, gamepad) && paddle_left.y > 0)
                 paddle_left.y -= PADDLE_SPEED * delta;
-            if (Keyboard.is_down (Keyboard.Key.S) && paddle_left.y < SCREEN_HEIGHT - paddle_left.height)
+            if (controls.is_action_down(PlayerAction.MOVE_DOWN, gamepad) && paddle_left.y < SCREEN_HEIGHT - paddle_left.height)
                 paddle_left.y += PADDLE_SPEED * delta;
 
-            if (Keyboard.is_down (Keyboard.Key.UP) && paddle_right.y > 0)
+            if (controls.is_action_down(PlayerAction.MOVE_UP, gamepad) && paddle_right.y > 0)
                 paddle_right.y -= PADDLE_SPEED * delta;
-            if (Keyboard.is_down (Keyboard.Key.DOWN) && paddle_right.y < SCREEN_HEIGHT - paddle_right.height)
+            if (controls.is_action_down(PlayerAction.MOVE_DOWN, gamepad) && paddle_right.y < SCREEN_HEIGHT - paddle_right.height)
                 paddle_right.y += PADDLE_SPEED * delta;
 
             // Use the Gamepad object if available
-            if (gamepad != null && gamepad.still_around ()) {
+            if (gamepad != null && gamepad.still_around()) {
                 // Use left analog stick for left paddle
-                float left_stick_y = gamepad.get_axis_movement (Gamepad.Axis.LEFT_Y);
-                if (Math.fabsf (left_stick_y) > 0.1) { // Add a deadzone threshold
+                float left_stick_y = controls.get_axis_movement_left(PlayerAction.MOVE_UP, gamepad);
+                if (Math.fabsf(left_stick_y) > 0.1) { // Add a deadzone threshold
                     paddle_left.y += left_stick_y * PADDLE_SPEED * delta;
-                    paddle_left.y = clamp (paddle_left.y, 0, SCREEN_HEIGHT - paddle_left.height);
+                    paddle_left.y = clamp(paddle_left.y, 0, SCREEN_HEIGHT - paddle_left.height);
                 }
 
                 // Use right analog stick for right paddle
-                float right_stick_y = gamepad.get_axis_movement (Gamepad.Axis.RIGHT_Y);
-                if (Math.fabsf (right_stick_y) > 0.1) { // Add a deadzone threshold
+                float right_stick_y = controls.get_axis_movement_right(PlayerAction.MOVE_UP, gamepad);
+                if (Math.fabsf(right_stick_y) > 0.1) { // Add a deadzone threshold
                     paddle_right.y += right_stick_y * PADDLE_SPEED * delta;
-                    paddle_right.y = clamp (paddle_right.y, 0, SCREEN_HEIGHT - paddle_right.height);
+                    paddle_right.y = clamp(paddle_right.y, 0, SCREEN_HEIGHT - paddle_right.height);
                 }
             }
+
 
             // Update ball and other game logic...
             ball.x += ball_velocity.x * delta;
