@@ -10,25 +10,25 @@ namespace Valengine {
         private const float PLAYER_SCALE = 2.0f;
         protected Sound ? jump_sound;
         public Gamepad ? gamepad;
+        private ControlMapping player_input;
 
         public PlatformerBody (float x, float y) {
             base (x, y, 64, 64);
+            player_input = new ControlMapping ();
         }
 
         public PlatformerBody.for_gamepad (float x, float y, Gamepad gamepad) {
             base (x, y, 64, 64);
             this.gamepad = gamepad;
+            player_input = new ControlMapping ();
         }
-
 
         public void update_player (float delta, EnvItem[] env_items) {
             // Horizontal movement
-            if (Keyboard.is_down (Keyboard.Key.LEFT) ||
-                (gamepad != null && gamepad.is_button_down (Gamepad.Button.LEFT_FACE_LEFT))) {
+            if (player_input.is_action_down (PlayerAction.MOVE_LEFT, gamepad)) {
                 position.x -= PLAYER_HORIZONTAL_SPEED * delta;
                 velocity.x = -PLAYER_HORIZONTAL_SPEED;
-            } else if (Keyboard.is_down (Keyboard.Key.RIGHT) ||
-                       (gamepad != null && gamepad.is_button_down (Gamepad.Button.LEFT_FACE_RIGHT))) {
+            } else if (player_input.is_action_down (PlayerAction.MOVE_RIGHT, gamepad)) {
                 position.x += PLAYER_HORIZONTAL_SPEED * delta;
                 velocity.x = PLAYER_HORIZONTAL_SPEED;
             } else {
@@ -36,8 +36,7 @@ namespace Valengine {
             }
 
             // Jumping
-            if ((Keyboard.is_down (Keyboard.Key.SPACE) ||
-                 (gamepad != null && gamepad.is_button_down (Gamepad.Button.RIGHT_FACE_DOWN))) && can_jump) {
+            if (player_input.is_action_down (PlayerAction.JUMP, gamepad) && can_jump) {
                 this.speed = -PLAYER_JUMP_SPEED;
                 this.can_jump = false;
                 if (jump_sound != null)jump_sound.playing = true;

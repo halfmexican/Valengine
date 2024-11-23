@@ -6,6 +6,8 @@ valengine_sources = [
 	'src/valengine/Food.vala',
 	'src/valengine/SnakeBody.vala',
 	'src/valengine/EnviromentItem.vala',
+	'src/valengine/ControlMapping.vala',
+	'src/valengine/PlayerActions.vala',
 ]
 
 
