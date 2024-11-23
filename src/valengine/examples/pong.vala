@@ -26,6 +26,7 @@ namespace Valengine {
         private int score_right = 0;
 
         // Audio
+        private string sound_path;
         private Sound ? ping;
         private Sound ? pong;
 
@@ -43,6 +44,11 @@ namespace Valengine {
             } catch (WindowError e) {
                 error (e.message);
             }
+
+            load_assets();
+            // Load audio
+            ping = new Sound (sound_path + "/ping.ogg");
+            pong = new Sound (sound_path + "/pickup_coin.ogg");
 
             // Initialize game objects
             paddle_left = new Rectangle (50, SCREEN_HEIGHT / 2 - 40, 15, 80);
@@ -63,12 +69,21 @@ namespace Valengine {
             timeout = new TimeoutSource (1);
             timeout.set_callback (main_loop);
             timeout.attach (loop.get_context ());
-
-            // Load audio
-            string sound_path = Path.build_filename (current_dir, "src/valengine/audio/");
-            ping = new Sound (sound_path + "ping.ogg");
-            pong = new Sound (sound_path + "pickup_coin.ogg");
+            
             loop.run ();
+        }
+
+        void load_assets () {
+            // Iterate through standard system data directories
+            foreach (string data_dir in Environment.get_system_data_dirs ()) {
+                string potential_sound_path = Path.build_filename (data_dir, "valengine", "audio");
+                if (FileUtils.test (potential_sound_path, FileTest.IS_DIR)) {
+                    sound_path = potential_sound_path;
+                }
+                if (sound_path != null) {
+                    message ("oops i cant find it");
+                }
+            }
         }
 
         private void reset_ball () {
