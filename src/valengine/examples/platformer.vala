@@ -134,11 +134,6 @@ public class Game : GLib.Application {
         // TODO: Only update on window resize??
         // Update the camera's offset to center it based on the new window size
         camera.offset = new Vector2 (window.width / 2, window.height / 2);
-
-        // Calculate the zoom level based on the window size
-        float width_ratio = (float) window.width / SCREEN_WIDTH;
-        float height_ratio = (float) window.height / SCREEN_WIDTH;
-        camera.zoom = (float) Math.fmin (width_ratio, height_ratio);
-
+2
     }
 }
