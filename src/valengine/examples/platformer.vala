@@ -27,8 +27,11 @@ public class Game : GLib.Application {
     };
 
     // Player & Environment
+    private string sprite_path = null;
+    private string sound_path = null;
     private PlatformerBody player;
     private EnvItem[] env_items;
+
 
     // Constructor
     private Game () {
@@ -44,21 +47,7 @@ public class Game : GLib.Application {
         }
 
         player = new PlatformerBody (400, 280);
-        string sprite_path = null;
-        string sound_path = null;
-
-        // Iterate through standard system data directories
-        foreach (string data_dir in Environment.get_system_data_dirs ()) {
-            string potential_sprite_path = Path.build_filename (data_dir, "valengine", "images");
-            string potential_sound_path = Path.build_filename (data_dir, "valengine", "audio");
-            if (FileUtils.test (potential_sprite_path, FileTest.IS_DIR)) {
-                sprite_path = potential_sprite_path;
-            }
-            if (FileUtils.test (potential_sound_path, FileTest.IS_DIR)) {
-                sound_path = potential_sound_path;
-            }
-            if (sprite_path != null && sound_path != null)break;
-        }
+        load_assets ();
 
         // Handle missing sprite path
         if (sprite_path == null) {
@@ -163,19 +152,29 @@ public class Game : GLib.Application {
         Font.DEFAULT.draw_text (camera_mode_text, new Shapes.Vector2 (20, 415), 20, null, Color.RED);
     }
 
-    public static int main (string[] args) {
-        var app = new Game ();
-        return app.run (args);
-    }
-
     void update_camera_projection () {
         // TODO: Only update on window resize??
         // Update the camera's offset to center it based on the new window size
         camera.offset = new Vector2 (window.width / 2, window.height / 2);
+    }
 
-        // Calculate the zoom level based on the window size
-        float width_ratio = (float) window.width / SCREEN_WIDTH;
-        float height_ratio = (float) window.height / SCREEN_WIDTH;
-        camera.zoom = (float) Math.fmin (width_ratio, height_ratio);
+    void load_assets () {
+         // Iterate through standard system data directories
+        foreach (string data_dir in Environment.get_system_data_dirs ()) {
+            string potential_sprite_path = Path.build_filename (data_dir, "valengine", "images");
+            string potential_sound_path = Path.build_filename (data_dir, "valengine", "audio");
+            if (FileUtils.test (potential_sprite_path, FileTest.IS_DIR)) {
+                sprite_path = potential_sprite_path;
+            }
+            if (FileUtils.test (potential_sound_path, FileTest.IS_DIR)) {
+                sound_path = potential_sound_path;
+            }
+            if (sprite_path != null && sound_path != null)break;
+        }
+    }
+
+    public static int main (string[] args) {
+        var app = new Game ();
+        return app.run (args);
     }
 }
