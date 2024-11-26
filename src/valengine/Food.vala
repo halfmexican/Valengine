@@ -1,9 +1,10 @@
 using Valengine.Shapes;
 namespace Valengine {
-    public class Food {
+    public class Food : EnvItem {
         public int[] position;
 
-        public Food (int rows, int cols) {
+        public Food (int rows, int cols, float x, float y, float width, float height, bool blocking, Color color, string texturePath) {
+            base (x, y, width, height, blocking, color, texturePath) ;
             position = new int[2];
             respawn (rows, cols);
         }
