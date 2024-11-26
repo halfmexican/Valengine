@@ -8,7 +8,7 @@ namespace Valengine {
         public int length;
         public Gee.List<Vector2> body_segments;
         private float move_timer;
-        private const float MOVE_INTERVAL = 0.1f; // Adjust as needed
+        private const float MOVE_INTERVAL = 0.1f; 
 
         public SnakeBody (float x, float y) {
             base (x, y, 32, 32);
