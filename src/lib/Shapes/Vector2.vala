@@ -2,11 +2,15 @@ namespace Valengine {
     namespace Shapes {
         public class Vector2 : GLib.Object {
             /* Variables */
-            public Raylib.Vector2 iVector;
+            internal Raylib.Vector2 iVector;
             /* Constructor */
             public Vector2 (float x, float y) {
                 this.iVector.x = x;
                 this.iVector.y = y;
+            }
+
+            public Raylib.Vector2 get_iVector () {
+                return this.iVector;
             }
 
             /* Methods */

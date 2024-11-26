@@ -1,8 +1,7 @@
 using GLib;
 using Valengine;
 using Valengine.Shapes;
-using Valengine.Graphics; // Import for Texture
-
+using Valengine.Graphics;
 namespace Valengine {
     public class CharacterBody : GLib.Object {
         public Vector2 position;

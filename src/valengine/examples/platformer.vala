@@ -76,11 +76,11 @@ public class Game : GLib.Application {
         player.set_jump_sound (jump_sound);
 
         env_items = {
-            new EnvItem (0, 0, 1000, 400, false, Color.SKY_BLUE),
-            new EnvItem (-5000, 400, 10000, 200, true, Color.GRAY),
-            new EnvItem (300, 200, 400, 10, true, Color.GRAY),
-            new EnvItem (250, 300, 100, 10, true, Color.GRAY),
-            new EnvItem (650, 300, 100, 10, true, Color.GRAY)
+            new EnvItem (0, 0, 1000, 400, false, Color.SKY_BLUE, sprite_path + "/bricks.png"),
+            new EnvItem (-5000, 400, 10000, 200, true, Color.WHITE, sprite_path + "/bricks.png"),
+            new EnvItem (300, 200, 400, 10, true, Color.WHITE, sprite_path + "/bricks.png"),
+            new EnvItem (250, 300, 100, 10, true, Color.WHITE, sprite_path + "/bricks.png"),
+            new EnvItem (650, 300, 100, 10, true, Color.WHITE, sprite_path + "/bricks.png")
         };
 
         camera = new 2DCamera.from_character_body (player, 0.0f, 1.0f);
@@ -133,7 +133,7 @@ public class Game : GLib.Application {
 
                 // Draw environment
                 foreach (var ei in env_items) {
-                    ei.rect.draw (ei.color, null, 0);
+                    ei.draw ();
                 }
 
                 player.draw ();

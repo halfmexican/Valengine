@@ -54,7 +54,6 @@ namespace Valengine {
             paddle_left = new Rectangle (50, SCREEN_HEIGHT / 2 - 40, 15, 80);
             paddle_right = new Rectangle (SCREEN_WIDTH - 65, SCREEN_HEIGHT / 2 - 40, 15, 80);
 
-            // Use draw_rounded to draw paddles with rounded corners
             float roundness = 0.5f; // Value between 0.0f and 1.0f
             int segments = 0;    // Use 0 for automatic segments calculation
             paddle_left.draw_rounded (roundness, segments, 0.0f, Color.WHITE);
@@ -104,10 +103,6 @@ namespace Valengine {
 
             float distance_squared = (distance_x * distance_x) + (distance_y * distance_y);
             return distance_squared < (circle.radius * circle.radius);
-        }
-
-        private float clamp (float value, float min, float max) {
-            return (float) Math.fmax (min, Math.fmin (value, max));
         }
 
         private bool main_loop () {
@@ -210,6 +205,10 @@ namespace Valengine {
             });
 
             return true;
+        }
+
+        private float clamp (float value, float min, float max) {
+            return (float) Math.fmax (min, Math.fmin (value, max));
         }
 
         public static int main (string[] args) {

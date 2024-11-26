@@ -4,13 +4,17 @@ using Raylib;
 namespace Valengine {
     namespace Shapes {
         public class Rectangle : Object {
-            public Raylib.Rectangle iRectangle;
+            internal Raylib.Rectangle iRectangle;
             /* Constructors */
             public Rectangle (float x, float y, float width, float height) {
                 iRectangle.x = x;
                 iRectangle.y = y;
                 iRectangle.width = width;
                 iRectangle.height = height;
+            }
+
+            public Raylib.Rectangle get_iRectangle () {
+                return this.iRectangle; 
             }
 
             /* Methods */

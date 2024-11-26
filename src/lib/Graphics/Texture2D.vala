@@ -79,14 +79,14 @@ namespace Valengine {
              * Draw the texture with advanced parameters.
              */
             public void draw_pro (Shapes.Rectangle source, Shapes.Rectangle destination, Shapes.Vector2 origin, float rotation, Color tint) {
-                Raylib.draw_texture_pro (this.iTexture, source.iRectangle, destination.iRectangle, origin.iVector, rotation, tint.iColor);
+                Raylib.draw_texture_pro (this.iTexture, source.get_iRectangle (), destination.get_iRectangle (), origin.iVector, rotation, tint.iColor);
             }
 
             /**
              * Draw the texture using NPatchInfo.
              */
             public void draw_npatch (NPatchInfo info, Shapes.Rectangle destination, Shapes.Vector2 origin, float rotation, Color tint) {
-                Raylib.draw_texture_npatch (this.iTexture, info, destination.iRectangle, origin.iVector, rotation, tint.iColor);
+                Raylib.draw_texture_npatch (this.iTexture, info, destination.get_iRectangle (), origin.iVector, rotation, tint.iColor);
             }
 
             /* Properties */

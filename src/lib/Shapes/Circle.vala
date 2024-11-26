@@ -4,7 +4,7 @@ using Raylib;
 namespace Valengine {
     namespace Shapes {
         public class Circle : Object {
-            private Vector2 center;
+            internal Vector2 center;
 
             public float x {
                 get {
