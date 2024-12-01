@@ -35,6 +35,7 @@ public class Game : GLib.Application {
     private PlatformerBody player;
     private EnvItem[] env_items;
 
+    private EnemyBody enemy;
 
     // Constructor
     private Game () {
@@ -51,6 +52,7 @@ public class Game : GLib.Application {
 
         player = new PlatformerBody (400, 280);
         load_assets ();
+        enemy = new EnemyBody(500, 280, sprite_path);
 
         // Handle missing sprite path
         if (sprite_path == null) {
@@ -107,6 +109,7 @@ public class Game : GLib.Application {
 
         float delta_time = window.frame_time;
         player.update (delta_time);
+        enemy.update (delta_time);
 
         player.update_player (delta_time, env_items);
         camera.update_camera_combined (player, delta_time, SCREEN_WIDTH, SCREEN_HEIGHT, 40.0f, current_camera_mode);
@@ -137,6 +140,7 @@ public class Game : GLib.Application {
                 }
 
                 player.draw ();
+                enemy.draw ();
             });
 
             draw_instructions ();

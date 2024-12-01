@@ -6,6 +6,7 @@ valengine_src = [
 	'src/valengine/Food.vala',
 	'src/valengine/SnakeBody.vala',
 	'src/valengine/EnviromentItem.vala',
+	'src/valengine/EnemyBody.vala',
 ]
 
 
