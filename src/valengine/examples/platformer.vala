@@ -114,11 +114,11 @@ public class Game : GLib.Application {
             return false;
         }
 
-        // Gamepad 
+        // Gamepad
         if (player.gamepad == null && Raylib.is_gamepad_available (0)) {
             player.gamepad = new Gamepad (0);
         }
-        
+
         float delta_time = window.frame_time;
         player.update (delta_time);
         player.move_player (delta_time, env_items);

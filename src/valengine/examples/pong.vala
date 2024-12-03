@@ -45,7 +45,7 @@ namespace Valengine {
                 error (e.message);
             }
 
-            load_assets();
+            load_assets ();
             // Load audio
             ping = new Sound (sound_path + "/ping.ogg");
             pong = new Sound (sound_path + "/pickup_coin.ogg");
@@ -69,7 +69,7 @@ namespace Valengine {
             timeout = new TimeoutSource (1);
             timeout.set_callback (main_loop);
             timeout.attach (loop.get_context ());
-            
+
             loop.run ();
         }
 
@@ -79,9 +79,6 @@ namespace Valengine {
                 string potential_sound_path = Path.build_filename (data_dir, "valengine", "audio");
                 if (FileUtils.test (potential_sound_path, FileTest.IS_DIR)) {
                     sound_path = potential_sound_path;
-                }
-                if (sound_path != null) {
-                    message ("oops i cant find it");
                 }
             }
         }

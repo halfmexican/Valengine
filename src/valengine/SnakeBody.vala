@@ -15,7 +15,7 @@ namespace Valengine {
             direction = 0; // Start moving right
             length = 1;
             body_segments = new Gee.ArrayList<Vector2> ();
-            body_segments.add (new Vector2 (x, y));            
+            body_segments.add (new Vector2 (x, y));
             move_timer = 0.0f;
         }
 
@@ -53,6 +53,7 @@ namespace Valengine {
                 position = new_head;
             }
         }
+
         public override void draw () {
             // Draw each segment of the snake
             foreach (Vector2 segment in body_segments) {

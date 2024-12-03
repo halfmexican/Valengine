@@ -11,7 +11,7 @@ namespace Valengine {
 
         private const int SCREEN_WIDTH = 800;
         private const int SCREEN_HEIGHT = 600;
-        private string image_path= Path.build_filename (Environment.get_current_dir (), "src/valengine/images/");
+        private string image_path = Path.build_filename (Environment.get_current_dir (), "src/valengine/images/");
 
         private Texture texture;
         private Image image;
@@ -28,7 +28,7 @@ namespace Valengine {
             }
 
             // Load image and create texture
-            
+
             image = new Image (image_path + "vala.png");
             texture = new Texture.from_image (image);
 
@@ -56,7 +56,7 @@ namespace Valengine {
         private void draw () {
             window.draw (() => {
                 window.clear_background (Color.BLACK);
-                
+
                 // Draw the texture
                 Rectangle source = new Rectangle (0, 0, texture.width, texture.height);
                 Rectangle destination = new Rectangle ((SCREEN_WIDTH - texture.width) / 2, (SCREEN_HEIGHT - texture.height) / 2, texture.width, texture.height);

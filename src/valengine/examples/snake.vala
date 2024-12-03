@@ -131,12 +131,12 @@ namespace Valengine {
                         );
                         snake_rect.draw (Color.GREEN, null, 0.0f);
                     }
-                    // Draw score                    
+                    // Draw score
                     Font.DEFAULT.draw_text ("SCORE:" + score.to_string (), new Vector2 (10f, 10f), 20, 10, Color.RED);
                 } else {
                     // Draw game over text
                     string game_over_text = "You lost! Press R to restart";
-                    Font.DEFAULT.draw_text (game_over_text, new Vector2 ((SCREEN_WIDTH ) / 4, SCREEN_HEIGHT / 2 ), 40, null, Color.RED);
+                    Font.DEFAULT.draw_text (game_over_text, new Vector2 ((SCREEN_WIDTH) / 4, SCREEN_HEIGHT / 2), 40, null, Color.RED);
                 }
             });
         }
