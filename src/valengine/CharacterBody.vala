@@ -28,6 +28,7 @@ namespace Valengine {
         }
 
         public virtual void update (float delta) {
+            // Flip sprite based on velocity
             if (velocity.x != 0) {
                 facing_left = velocity.x < 0;
                 sprite_sheet ?.update ();

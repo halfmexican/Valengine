@@ -21,7 +21,7 @@ namespace Valengine {
         }
 
 
-        public void update_player (float delta, EnvItem[] env_items) {
+        public void move_player (float delta, EnvItem[] env_items) {
             // Horizontal movement
             if (Keyboard.is_down (Keyboard.Key.LEFT) ||
                 (gamepad != null && gamepad.is_button_down (Gamepad.Button.LEFT_FACE_LEFT))) {

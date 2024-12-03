@@ -48,32 +48,32 @@ public class Game : GLib.Application {
         } catch (WindowError e) {
             error (e.message);
         }
-
-        player = new PlatformerBody (400, 280);
+        // Load Audio and Images
         load_assets ();
 
-        // Handle missing sprite path
+        // Development Fallback
         if (sprite_path == null) {
-            warning ("Error: Unable to locate installed images directory.\n");
+            warning ("Unable to locate installed images directory.\n");
             message ("trying development images directory...\n");
             sprite_path = Path.build_filename (Environment.get_current_dir (), "src/valengine/images/");
             return;
         }
 
-        // Handle missing sound path
         if (sound_path == null) {
-            warning ("Error: Unable to locate installed sounds directory.\n");
+            warning ("Unable to locate installed sounds directory.\n");
             message ("trying development sounds directory...\n");
             sound_path = Path.build_filename (Environment.get_current_dir (), "src/valengine/audio/");
         }
 
-        // Print the resolved paths (optional debugging)
         message ("Images directory found at: %s\n", sprite_path);
         message ("Sounds directory found at: %s\n", sound_path);
 
+        // Initialize Player & Environment
+        player = new PlatformerBody (400, 280);
         player.load_sprite (sprite_path + "/penguin.png", 32, 32, 4);
         Sound jump_sound = new Sound (sound_path + "/jump.ogg");
         player.set_jump_sound (jump_sound);
+        camera = new 2DCamera.from_character_body (player, 0.0f, 1.0f);
 
         env_items = {
             new EnvItem (0, 0, 1000, 400, false, Color.SKY_BLUE),
@@ -83,15 +83,28 @@ public class Game : GLib.Application {
             new EnvItem (650, 300, 100, 10, true, Color.GRAY)
         };
 
-        camera = new 2DCamera.from_character_body (player, 0.0f, 1.0f);
+        // Main Loop
         window.target_fps = 60;
-
         loop = new MainLoop ();
         timeout = new TimeoutSource (1);
         timeout.set_callback (main_loop);
         timeout.attach (loop.get_context ());
-
         loop.run ();
+    }
+
+    void load_assets () {
+        // Iterate through standard system data directories
+        foreach (string data_dir in Environment.get_system_data_dirs ()) {
+            string potential_sprite_path = Path.build_filename (data_dir, "valengine", "images");
+            string potential_sound_path = Path.build_filename (data_dir, "valengine", "audio");
+            if (FileUtils.test (potential_sprite_path, FileTest.IS_DIR)) {
+                sprite_path = potential_sprite_path;
+            }
+            if (FileUtils.test (potential_sound_path, FileTest.IS_DIR)) {
+                sound_path = potential_sound_path;
+            }
+            if (sprite_path != null && sound_path != null)break;
+        }
     }
 
     // Main loop
@@ -101,19 +114,19 @@ public class Game : GLib.Application {
             return false;
         }
 
+        // Gamepad 
         if (player.gamepad == null && Raylib.is_gamepad_available (0)) {
             player.gamepad = new Gamepad (0);
         }
-
+        
         float delta_time = window.frame_time;
         player.update (delta_time);
-
-        player.update_player (delta_time, env_items);
+        player.move_player (delta_time, env_items);
         camera.update_camera_combined (player, delta_time, SCREEN_WIDTH, SCREEN_HEIGHT, 40.0f, current_camera_mode);
         update_camera_projection ();
 
         // Add Gamepad here
-        if (Keyboard.is_pressed (Keyboard.Key.C) || player.gamepad != null && player.gamepad.is_button_pressed(Gamepad.Button.RIGHT_FACE_RIGHT) ) {
+        if (Keyboard.is_pressed (Keyboard.Key.C) || player.gamepad != null && player.gamepad.is_button_pressed (Gamepad.Button.RIGHT_FACE_RIGHT)) {
             current_camera_mode = (CameraMode) (((int) current_camera_mode + 1) % camera_modes.length);
         }
 
@@ -160,21 +173,6 @@ public class Game : GLib.Application {
         // TODO: Only update on window resize??
         // Update the camera's offset to center it based on the new window size
         camera.offset = new Vector2 (window.width / 2, window.height / 2);
-    }
-
-    void load_assets () {
-         // Iterate through standard system data directories
-        foreach (string data_dir in Environment.get_system_data_dirs ()) {
-            string potential_sprite_path = Path.build_filename (data_dir, "valengine", "images");
-            string potential_sound_path = Path.build_filename (data_dir, "valengine", "audio");
-            if (FileUtils.test (potential_sprite_path, FileTest.IS_DIR)) {
-                sprite_path = potential_sprite_path;
-            }
-            if (FileUtils.test (potential_sound_path, FileTest.IS_DIR)) {
-                sound_path = potential_sound_path;
-            }
-            if (sprite_path != null && sound_path != null)break;
-        }
     }
 
     public static int main (string[] args) {
