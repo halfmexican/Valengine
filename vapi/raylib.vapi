@@ -1350,13 +1350,13 @@ namespace Raylib {
 	public static AutomationEventList load_automation_event_list(string fileName);
 
 	[CCode (cname = "UnloadAutomationEventList")]
-	public static void unload_automation_event_list(AutomationEventList *list);
+	public static void unload_automation_event_list(AutomationEventList list);
 
 	[CCode (cname = "ExportAutomationEventList")]
 	public static bool export_automation_event_list(AutomationEventList list, string fileName);
 
 	[CCode (cname = "SetAutomationEventList")]
-	public static void set_automation_event_list(AutomationEventList *list);
+	public static void set_automation_event_list(AutomationEventList* list);
 
 	[CCode (cname = "SetAutomationEventBaseFrame")]
 	public static void set_automation_event_base_frame(int frame);
@@ -1903,8 +1903,8 @@ namespace Raylib {
     [CCode (cname = "LoadRenderTexture")]
     public static RenderTexture2D load_render_texture (int width, int height);
 
-    [CCode (cname = "IsTextureReady")]
-    public static bool is_texture_ready (Texture2D texture);
+    [CCode (cname = "IsTextureValid")]
+    public static bool is_texture_valid (Texture2D texture);
 
     [CCode (cname = "UnloadTexture")]
     public static void unload_texture (Texture2D texture);
@@ -2019,8 +2019,8 @@ namespace Raylib {
     [CCode (cname = "LoadFontFromMemory")]
     public static Font load_font_from_memory (string file_type, uint8[] file_data, int font_size, int[] font_characters);
 
-    [CCode (cname = "IsFontReady")]
-    public static bool is_font_ready (Font font);
+    [CCode (cname = "IsFontValid")]
+    public static bool is_font_valid (Font font);
 
     [CCode (cname = "LoadFontData")]
     public static GlyphInfo? load_font_data (uchar[] file_data, int font_size, int[] font_characters, FontType type);

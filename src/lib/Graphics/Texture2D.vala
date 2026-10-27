@@ -11,7 +11,7 @@ namespace Valengine {
              * Load texture from a file.
              */
             public Texture (string file) {
-                if (Raylib.is_texture_ready (this.iTexture) == false) {
+                if (Raylib.is_texture_valid (this.iTexture) == false) {
                     this.iTexture = Raylib.load_texture (file);
                     is_loaded = true;
                 }

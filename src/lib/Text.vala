@@ -61,7 +61,7 @@ namespace Valengine {
         /* Properties */
         public bool ready {
             get {
-                return (Raylib.is_font_ready (this.iFont));
+                return (Raylib.is_font_valid (this.iFont));
             }
         }
     }

@@ -9,7 +9,7 @@ namespace Valengine {
 				return;
 			}
 			~EventList() {
-				Raylib.unload_automation_event_list(&eventList);
+				Raylib.unload_automation_event_list(eventList);
 			}
 			/* Methods */
 			public void export(string exportFile) throws GLib.FileError {

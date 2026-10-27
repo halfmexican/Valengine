@@ -57,11 +57,11 @@ namespace Valengine {
 
             /**
              * Draw a rectangle outline with rounded corners.
-             */
+             *
             public void draw_rounded_outline (float roundness, int segments, float thickness, Color color) {
                 Raylib.draw_rectangle_rounded_lines (iRectangle, roundness, segments, thickness, color.iColor);
                 return;
-            }
+            } */
 
             /* Properties */
             /**
